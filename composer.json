@@ -1,0 +1,23 @@
+{
+  "name": "born/theme",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Dāvis Krēgers",
+      "email": "davis@born.lv"
+    }
+  ],
+  "require": {
+    "born/core": "1.1.53",
+    "mpdf/mpdf": "^8.1"
+  },
+  "require-dev": {
+    "10up/wp_mock": "0.2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Born\\CPTs\\": "lib/CPTs/",
+      "Erst\\": "lib/Erst/"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@mixin transition-very-fast() {
+	transition: all 150ms ease;
+}
+
+@mixin transition-fast() {
+	transition: all 350ms ease;
+}
+
+@mixin desktop-extra-wide {
+	@media only screen and (min-width: #{$desktop-extra-wide-width}) {
+		@content;
+	}
+}
+
+@mixin desktop-wide {
+	@media only screen and (min-width: #{$desktop-wide-width}) {
+		@content;
+	}
+}
+
+@mixin desktop-narrow {
+	@media only screen and (max-width: #{$desktop-narrow-width}) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media only screen and (max-width: #{$tablet-width}) {
+		@content;
+	}
+}
+
+@mixin phone {
+	@media only screen and (max-width: #{$phone-width}) {
+		@content;
+	}
+}
+
+@mixin hide-text() {
+	font-size: 0 !important;
+	line-height: 0 !important;
+}
