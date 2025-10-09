@@ -2,6 +2,20 @@
 
 $schemas_code = get_field('schemas_code',get_the_ID());
 
+$footer_categories_menu_1 = born_render_menu([
+  'theme_location' => 'footer-categories-menu-1',
+  'depth' => 1,
+  'items_wrap' => '<ul class="tre-reset">%3$s</ul>',
+  'walker' => 'Born\Core\Walkers\Born_Main_Menu_Walker',
+]);
+
+$footer_categories_menu_2 = born_render_menu([
+  'theme_location' => 'footer-categories-menu-2',
+  'depth' => 1,
+  'items_wrap' => '<ul class="tre-reset">%3$s</ul>',
+  'walker' => 'Born\Core\Walkers\Born_Main_Menu_Walker',
+]);
+
 $footer_menu_left = born_render_menu([
     'theme_location' => 'footer-menu-left',
     'depth' => 1,
@@ -31,20 +45,12 @@ $footer_brands = get_field('footer_brands', 'options');
 
                 <div class="left">
 
-                    <div class="newsletter">
-                        <h2><?php echo born_translation('newsletter_title');?></h2>
-                        <form id="mc-newsletter">
-                            <div class="input-wrapper">
-                                <input type="email" id="email" name="email" placeholder="<?php echo born_translation('newsletter_placeholder');?>" required>
-                            </div>
-                            <div class="input-wrapper">
-                                <input type="submit" value="<?php echo born_translation('newsletter_submit');?>">
-                            </div>
+                    <div class="menu">
+                        <?php echo $footer_categories_menu_1;?>
+                    </div>
 
-                            <div class="mc-success" style="display: none;">
-	                            <?php echo born_translation('newsletter_success');?>
-                            </div>
-                        </form>
+                    <div class="menu">
+                        <?php echo $footer_categories_menu_2;?>
                     </div>
 
                 </div>

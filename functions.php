@@ -71,6 +71,8 @@ try {
 		'main-menu-mobile'   => 'Main menu mobile',
 		'footer-menu-left'   => 'Footer menu left',
 		'footer-menu-right'   => 'Footer menu right',
+    'footer-categories-menu-1'   => 'Footer categories menu 1',
+    'footer-categories-menu-2'   => 'Footer categories menu 2',
 		
 	])->register();
 
