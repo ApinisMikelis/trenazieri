@@ -1948,6 +1948,12 @@ main.tre-main > .inner {
   flex-flow: column;
   align-items: center;
 }
+.tre-products-wrapper
+  .products
+  .product
+  a.woocommerce-LoopProduct-link.private {
+  border: 2px solid red;
+}
 .tre-products-wrapper .products .product .top-bar {
   display: flex;
   align-items: flex-start;

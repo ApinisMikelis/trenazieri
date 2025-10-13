@@ -907,11 +907,9 @@ main.tre-main {
         display: flex;
         flex-flow: column;
         align-items: center;
-        // &:hover {
-        // 	h2.woocommerce-loop-product__title {
-        // 		color: $color-orange;
-        // 	}
-        // }
+        &.private {
+          border: 2px solid red;
+        }
       }
       .top-bar {
         display: flex;
@@ -1033,6 +1031,10 @@ main.tre-main {
         .woocommerce-loop-product__link {
           flex-flow: column;
           justify-content: flex-end;
+
+          &.private {
+            border: 2px solid red;
+          }
         }
         .tre-product-img-wrap {
           position: absolute;

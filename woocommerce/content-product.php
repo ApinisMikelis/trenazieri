@@ -28,10 +28,18 @@
     if('in_showroom' === $product->get_meta( '_stock_status' )):
         $in_shop = true;
     endif;
+
+    $is_private = false;
+    
+    if ( 'private' === $product->get_status() ) {
+        if ( current_user_can( 'manage_options' ) || current_user_can( 'edit_pages' ) ) {
+            $is_private = true;
+        }
+    }
 ?>
 <div <?php wc_product_class( '', $product ); ?>>
 	<?php
-		echo '<a href="' . esc_url( get_permalink( $product->get_id() ) ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">';
+		echo '<a href="' . esc_url( get_permalink( $product->get_id() ) ) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link '.($is_private ? 'private' : '').'">';
     ?>
     <div class="top-bar">
 	    <?php if ( $product->is_on_sale() ) : ?>
