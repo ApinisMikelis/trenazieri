@@ -58,8 +58,6 @@ $wrapper_classes   = apply_filters(
 );
 $youtube_video_url = get_field('youtube_video_url', $product->get_id());
 ?>
-<!--<div class="<?php /*echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); */?>" data-columns="<?php /*echo esc_attr( $columns ); */?>" style="opacity: 0; transition: opacity .25s ease-in-out;">-->
-	<!--<div class="woocommerce-product-gallery__wrapper">-->
 
 <div class="tre-product-single-gallery">
     <div class="slider-photos-wrapper">
@@ -168,26 +166,6 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
     </div>
 <?php endif;?>
  
-	<!--</div>-->
-<!--</div>-->
-
-
-<?php
-/*	if ( $post_thumbnail_id ) {
-		$html = wc_get_gallery_image_html( $post_thumbnail_id, true );
-	} else {
-		$wrapper_classname = $product->is_type( 'variable' ) && ! empty( $product->get_available_variations( 'image' ) ) ?
-			'woocommerce-product-gallery__image woocommerce-product-gallery__image--placeholder' :
-			'woocommerce-product-gallery__image--placeholder';
-		$html              = sprintf( '<div class="%s">', esc_attr( $wrapper_classname ) );
-		$html             .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
-		$html             .= '</div>';
-	}
-	
-	echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
-	
-	do_action( 'woocommerce_product_thumbnails' );
-*/?>
 
 <script>
     jQuery(document).ready(function ($) {
@@ -245,24 +223,10 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
 
                     jQuery('.tre-product-single-gallery .slider-photos').addClass('is-visible');
 
-                    // jQuery('.tre-product-single-gallery .slider-thumbs .slider-item').each(function(i) {
-
-                    // 	var item = jQuery(this);
-
-                    // 	setTimeout(function() {
-                    // 		item.addClass('is-visible');
-                    // 	}, i * 100);
-
-                    // });
-
-
                 }, 100);
 
             }
 
-
-            
-        
         
         // Ensure the variation switch logic works only after the sliders are initialized
         $('.variations_form').on('found_variation', function (event, variation) {
