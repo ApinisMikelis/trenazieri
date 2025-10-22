@@ -24,6 +24,16 @@
     <link rel="preload" as="font" href="<?= BORN_FONT ?>HelveticaNeueLTProTrenazieri-Extended.woff2" crossorigin="anonymous">
     <link rel="preload" as="style" href="<?= BORN_CSS ?>app.min.css?ver=<?= BORN_VERSION ?>">
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17647817134"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-17647817134');
+    </script>
+
 	<?php wp_head(); ?>
  
 </head>
