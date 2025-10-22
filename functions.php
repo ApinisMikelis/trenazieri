@@ -6,13 +6,9 @@ require 'vendor/autoload.php';
 	
 add_theme_support( 'woocommerce' );
 
-// Allow SVG upload
-
 function allow_svg_upload($mimes)
 {
-
 	$mimes['svg'] = 'image/svg';
-
 	return $mimes;
 }
 
@@ -27,39 +23,15 @@ try {
 	require_once __DIR__ . '/lib/rewrites.php';
 	require_once __DIR__ . '/lib/cpts.php';
 
-	//require_once __DIR__ . '/lib/admin.php';
-	//  require_once __DIR__ . '/lib/plugins.php';
-	// require_once __DIR__ . '/lib/filters.php';
-
 	require_once __DIR__ . '/lib/MenuFields/Menu.php';
 	require_once __DIR__ . '/lib/Walkers/MainMenu.php';
 	require_once __DIR__ . '/lib/Walkers/SlinkyMenu.php';
 	require_once __DIR__ . '/lib/Walkers/MainMobileMenu.php';
-	// require_once __DIR__ . '/lib/Walkers/LangMenu.php';
-	// require_once __DIR__ . '/lib/Walkers/FooterMenu.php';
-	// require_once __DIR__ . '/lib/Walkers/IconMenu.php';
-	// require_once __DIR__ . '/lib/MailChimpWrapper.php';
+	
 	require_once __DIR__ . '/lib/assets.php';
 	require_once __DIR__ . '/lib/acf.php';
 	require_once __DIR__ . '/lib/acf-options.php';
 	require_once __DIR__ . '/lib/Schemas.php';
-
-	//require_once __DIR__ . '/lib/nordicplast/Ajax.php';
-	//$BORN_AJAX = new Nordicplast\Ajax();
-	//$BORN_AJAX->init();
-	//require_once __DIR__ . '/lib/acf-archive-slugs.php';
-	//require_once __DIR__ . '/lib/acf-import.php';
-	//  require_once __DIR__ . '/lib/acf.php';
-	//  require_once __DIR__ . '/lib/acf-global.php';
-
-	// require_once __DIR__ . '/lib/widgets-init.php';
-	//  require_once __DIR__ . '/lib/archive-filtering.php';
-
-	/**
-	 * Autocomplete Search
-	 */
-//	require_once __DIR__ . '/lib/ProductsAutocomplete.php';
-//	new ProductsAutocomplete();
 
 	/**
 	 * MENUS
@@ -75,13 +47,6 @@ try {
     'footer-categories-menu-2'   => 'Footer categories menu 2',
 		
 	])->register();
-
-//	require_once __DIR__ . '/lib/MailChimp.php';
-
-//	require_once __DIR__ . '/lib/Erst/Blog.php';
-
-	//$BORN_BLOG = new Erst\Blog();
-	//$BORN_BLOG->init();
 
 } catch (\Exception $e) {
 	error_log(
@@ -103,8 +68,6 @@ try {
 if (class_exists('Schemas')) {
     new Schemas();
 }
-
-/** rewrites */
 
 add_theme_support( 'post-thumbnails' );
 add_theme_support( 'wp-block-styles' );
@@ -542,17 +505,11 @@ function disable_woo_commerce_sidebar() {
                toggleFields();
                   
                   if (checked){
-           
-
-  
-
-
                       if (jQuery("#billing_company").attr('oldvalue') === '-'){
                           jQuery("#billing_company").val('');
                       }else{
                           jQuery("#billing_company").val(jQuery("#billing_company").attr('oldvalue'));
                       }
-
 
                       if (jQuery("#billing_address_1").attr('oldvalue') === '-'){
                           jQuery("#billing_address_1").val('');
@@ -571,8 +528,6 @@ function disable_woo_commerce_sidebar() {
                       }else{
                           jQuery("#billing_postcode").val(jQuery("#billing_postcode").attr('oldvalue'));
                       }
-                      
-
 
 							 jQuery(".buyer-is-company-label").addClass('is-checked');
 
@@ -606,7 +561,6 @@ function disable_woo_commerce_sidebar() {
 	}
 	
 	
-	
 	function ufloat_delivery_estimates() {
 		$min_delivery_time = 0;
 		$max_delivery_time = 0;
@@ -616,10 +570,6 @@ function disable_woo_commerce_sidebar() {
 			$product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
 			
 			$prod_delivery_time = get_the_terms($cart_item['product_id'],'delivery-times');
-            
-         //   die('saf');
-            
-         
    
 			$delivery_time_in_days_min = get_field('days_from', $prod_delivery_time[0]);
 			$delivery_time_in_days_max = get_field('days_to', $prod_delivery_time[0]);
@@ -684,61 +634,39 @@ function disable_woo_commerce_sidebar() {
 		register_sidebar( array(
 			'name' => 'Footer menu left',
 			'id' => 'footer-left',
-			//'description' => 'This is my custom widget area.',
 			'before_widget' => '',
 			'after_widget' => '',
-			//'before_title' => '<h2 class="widget-title">',
-			//'after_title' => '</h2>',
 		) );
 		
 		register_sidebar( array(
 			'name' => 'Footer menu center',
 			'id' => 'footer-center',
-			//'description' => 'This is my custom widget area.',
 			'before_widget' => '',
 			'after_widget' => '',
-			//'before_title' => '<h2 class="widget-title">',
-			//'after_title' => '</h2>',
 		) );
 		
 		register_sidebar( array(
 			'name' => 'Footer menu right',
 			'id' => 'footer-right',
-			//'description' => 'This is my custom widget area.',
 			'before_widget' => '',
 			'after_widget' => '',
-			//'before_title' => '<h2 class="widget-title">',
-			//'after_title' => '</h2>',
 		) );
 		
 		register_sidebar( array(
 			'name' => 'Footer socials',
 			'id' => 'footer-socials',
-			//'description' => 'This is my custom widget area.',
 			'before_widget' => '',
 			'after_widget' => '',
-			//'before_title' => '<h2 class="widget-title">',
-			//'after_title' => '</h2>',
 		) );
-		
-		
-		
-		
 		
 	}
 	add_action( 'widgets_init', 'borntheme_theme_widgets_init' );
-	
-	
-	
-	
 
-// Adds a custom rule type.
 	add_filter( 'acf/location/rule_types', function( $choices ) {
 		$choices[ __("Other", 'acf') ]['wc_prod_attr'] = 'WC Product Attribute';
 		return $choices;
 	} );
 
-// Adds custom rule values (optional, since it applies to all attributes automatically).
 	add_filter( 'acf/location/rule_values/wc_prod_attr', function( $choices ) {
 		foreach ( wc_get_attribute_taxonomies() as $attr ) {
 			$pa_name = wc_attribute_taxonomy_name( $attr->attribute_name );
@@ -747,7 +675,6 @@ function disable_woo_commerce_sidebar() {
 		return $choices;
 	} );
 
-// Matches the custom rule to automatically apply to all attributes.
 	add_filter( 'acf/location/rule_match/wc_prod_attr', function( $match, $rule, $options ) {
 		if ( isset( $options['taxonomy'] ) ) {
 			// Automatically match all attributes regardless of operator or specific value.
@@ -786,7 +713,6 @@ function disable_woo_commerce_sidebar() {
 		$fields['billing']['billing_registration_number'] = array(
 			'type'        => 'text',
 			'label'       => __('Registration Number'),
-		//	'placeholder' => __('Enter your registration number'),
 			'required'    => false,
 			'priority'    => 21, // Adjust this priority to set the order
 			'class'       => array('form-row-wide'),
@@ -796,26 +722,13 @@ function disable_woo_commerce_sidebar() {
 		$fields['billing']['billing_vat_number'] = array(
 			'type'        => 'text',
 			'label'       => __('VAT Number'),
-		//	'placeholder' => __(''),
 			'required'    => false,
-			'priority'    => 22, // Adjust this priority to set the order
+			'priority'    => 22,
 			'class'       => array('form-row-wide'),
 		);
 		
 		return $fields;
 	}
-
-// Validate the custom fields
-	/*add_action('woocommerce_checkout_process', 'validate_custom_billing_fields');
-	
-	function validate_custom_billing_fields() {
-		if (!$_POST['billing_registration_number']) {
-			wc_add_notice(__('Please enter your registration number.'), 'error');
-		}
-		if (!$_POST['billing_vat_number']) {
-			wc_add_notice(__('Please enter your VAT number.'), 'error');
-		}
-	}*/
 
 // Save the custom fields to order meta
 	add_action('woocommerce_checkout_update_order_meta', 'save_custom_billing_fields');
@@ -856,27 +769,15 @@ function disable_woo_commerce_sidebar() {
 	use DrewM\MailChimp\MailChimp;
 	
 	function mc_subscribe() {
-		
-		
-		
-		//global $BORN_FRAMEWORK;
-		$apiKey = get_field('mailchimp_api_key','options');
-		
+	
+		$apiKey = get_field('mailchimp_api_key','options');	
 		$list_id = get_field('mailchimp_list_id','options');
 		
-		if ($apiKey && $list_id){
-			
-		//	$apiKey = $BORN_FRAMEWORK->Options->Get('mailchimp_api');
-			
-		//	$list_id = $BORN_FRAMEWORK->Options->Get('mc_list_id');
-		
-		
+		if ($apiKey && $list_id){	
 			
 			$email	= isset($_POST['data']['email'])?trim($_POST['data']['email']):"";
 			
 			$MailChimp = new MailChimp($apiKey);
-			
-			
 			
 			$MailChimp->post("lists/$list_id/members", [
 				'email_address' => $email,
@@ -892,7 +793,7 @@ function disable_woo_commerce_sidebar() {
 				
 				$result = $MailChimp->patch("lists/$list_id/members/$subscriber_hash", [
 					'status'        => 'subscribed',
-					// 'interests'    => ['2s3a384h' => true],
+					
 				]);
 			}
 			
@@ -992,32 +893,10 @@ function disable_woo_commerce_sidebar() {
 	}, 100 );
 	
 	
-	
-
-	
-	
-/*	add_filter('facetwp_facet_html', function ($output, $params) {
-		// Target the specific facet by its name
-		if ('kartosana' === $params['facet']['name']) {
-			// Define the custom label HTML
-			$custom_label = '<div class="fs-custom-label">Kārtot pēc</div>';
-			
-			// Replace the `<div class="fs-label-wrap">` with the custom label included
-			$output = preg_replace(
-				'/<div class="fs-label-wrap">/',
-				'<div class="fs-label-wrap">' . $custom_label,
-				$output
-			);
-		}
-		
-		return $output;
-	}, 10, 2);*/
-	
 	function tren_register_widget_area() {
     register_sidebar( array(
         'name'          => __( 'Products Sidebar', 'textdomain' ),
         'id'            => 'products-sidebar',
-        //'description'   => __( 'A custom widget area.', 'textdomain' ),
         'before_widget' => '',
         'after_widget'  => '',
         'before_title'  => '',
@@ -1085,29 +964,10 @@ add_action( 'widgets_init', 'tren_register_widget_area' );
 		remove_menu_page('edit.php');
 	}
 	add_action('admin_menu', 'remove_posts_menu');
-	
-	
-	
-	
-	/*add_filter('woocommerce_product_get_price', 'custom_logged_in_price', 10, 2);
-	add_filter('woocommerce_product_get_regular_price', 'custom_logged_in_price', 10, 2);
-	
-	function custom_logged_in_price($price, $product) {
-		if (is_user_logged_in()) {
-			$discount = 0.10; // 10% discount
-			$price = $price - ($price * $discount);
-		}
-		return $price;
-	}*/
-	
-	
 
 	
 	remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
-	
-	
-	
-	
+		
 	
 	function get_custom_image_url($attachment_id, $size_name, $width, $height) {
 		$file_path = get_attached_file($attachment_id);
