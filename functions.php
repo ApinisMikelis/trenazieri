@@ -14,6 +14,28 @@ function allow_svg_upload($mimes)
 
 add_filter('upload_mimes', 'allow_svg_upload');
 
+function enqueue_custom_admin_styles( $hook ) {
+  // Check to ensure we are only loading the CSS on the WooCommerce Products list screen
+  // The screen ID for the products list is typically 'edit.php' with the 'post_type=product' query arg.
+  if ( 'edit.php' !== $hook ) {
+      return;
+  }
+  
+  // Additional check for the correct post type
+  if ( !isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'product' ) {
+      return;
+  }
+
+  // Enqueue the stylesheet from your theme's root directory
+  wp_enqueue_style( 
+      'custom_admin_css', 
+      get_template_directory_uri() . '/admin-style.css', 
+      array(), 
+      wp_get_theme()->get('Version') 
+  );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_custom_admin_styles' );
+
 try {
 	require_once __DIR__ . '/lib/constants.php';
 	require_once __DIR__ . '/lib/helpers.php';

@@ -1,0 +1,9 @@
+.status-private {
+  background-color: #ffeaea !important;
+  border-left: 5px solid #cc0000;
+}
+
+.status-private .title a {
+  color: #cc0000;
+  font-weight: bold;
+}
