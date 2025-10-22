@@ -151,6 +151,23 @@ $faq = get_field('faq',$product->get_id());
           </div>
         <?php endif;?>
 
+        <?php
+          $product_tags = get_the_terms( $product->get_id(), 'product_tag' );
+
+          if ( $product_tags && ! is_wp_error( $product_tags ) ) : ?>
+              <div class="product-tags">
+                  <ul class="ul-ignore">
+                      <?php foreach ( $product_tags as $tag ) : ?>
+                          <li>
+                            <a href="<?php echo get_term_link($tag); ?>">
+                              <?php echo esc_html( $tag->name ); ?>
+                            </a>
+                          </li>
+                      <?php endforeach; ?>
+                  </ul>
+              </div>
+          <?php endif; ?>
+
         
         <div class="accordion-description">
             <div class="inner">

@@ -36,6 +36,12 @@ function enqueue_custom_admin_styles( $hook ) {
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_custom_admin_styles' );
 
+// enqueue styles.css
+add_action('wp_enqueue_scripts', 'enqueue_styles');
+function enqueue_styles() {
+  wp_enqueue_style('styles', get_template_directory_uri() . '/style.css', array(), wp_get_theme()->get('Version'));
+}
+
 try {
 	require_once __DIR__ . '/lib/constants.php';
 	require_once __DIR__ . '/lib/helpers.php';

@@ -5,3 +5,27 @@ Author URI: https://born.lv/
 Version: 1.0.3
 Text Domain: trenazieri
 */
+
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.product-tags ul {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-tags li {
+  list-style: none;
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 12px;
+  color: #909090;
+}
