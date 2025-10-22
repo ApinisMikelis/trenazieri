@@ -38,10 +38,6 @@ if('in_showroom' === $product->get_meta( '_stock_status' )):
     $in_shop = true;
 endif;
 
-//$delivery_time_in_days = get_field('delivery_time_in_days',$product->get_id());
-//$delivery_time_in_days_from = get_field('delivery_time_in_days_from',$product->get_id());
-//$delivery_time_in_days_to = get_field('delivery_time_in_days_to',$product->get_id());
-
 
 $prod_delivery_time = get_the_terms($product->get_id(),'delivery-times');
 
@@ -58,7 +54,6 @@ $faq = get_field('faq',$product->get_id());
 	 * @hooked woocommerce_show_product_sale_flash - 10
 	 * @hooked woocommerce_show_product_images - 20
 	 */
-	//do_action( 'woocommerce_before_single_product_summary' );
     woocommerce_show_product_images();
 	?>
 
@@ -77,49 +72,50 @@ $faq = get_field('faq',$product->get_id());
         ?>
 
         <?php
-        woocommerce_template_single_title();
-        woocommerce_template_single_excerpt();
-        //woocommerce_template_single_price();
+          woocommerce_template_single_title();
+          woocommerce_template_single_excerpt();
         ?>
 
         <div class="price-wrapper">
 
             <div class="left">
 
-                <?php woocommerce_template_single_price();?>
+              <?php woocommerce_template_single_price();?>
 	            
 	            <?php if($in_shop):?>
-                    <div class="tags">
-                        <span>In Showroom</span>
-                    </div>
+                <div class="tags">
+                    <span>In Showroom</span>
+                </div>
 	            <?php endif;?>
 
             </div>
             
             <?php if ($prod_delivery_time):?>
-                <?php
-	            $delivery_text = get_field('frontend_text', $prod_delivery_time[0]);
-	            $days_from = get_field('days_from',$prod_delivery_time[0]);
-	            $days_to = get_field('days_to',$prod_delivery_time[0]);
-	            
-	            $delivery_text = str_replace('%from%', $days_from, $delivery_text);
-	            $delivery_text = str_replace('%to%', $days_to, $delivery_text);
-                ?>
-            <div class="right">
+              <?php
+                $delivery_text = get_field('frontend_text', $prod_delivery_time[0]);
+                $days_from = get_field('days_from',$prod_delivery_time[0]);
+                $days_to = get_field('days_to',$prod_delivery_time[0]);
+                
+                $delivery_text = str_replace('%from%', $days_from, $delivery_text);
+                $delivery_text = str_replace('%to%', $days_to, $delivery_text);
+              ?>
+              <div class="right">
 
-                <div class="delivery">
-                    <?php echo $delivery_text;?>
-                </div>
+                  <div class="delivery">
+                      <?php echo $delivery_text;?>
+                  </div>
 
-            </div>
+              </div>
             <?php endif;?>
 
         </div>
 		
-		<?php if ( $product->is_on_backorder() ): ?>
+		    <?php if ( $product->is_on_backorder() ): ?>
             <div class="submit-wrapper">
 
-                <button type="submit" name="add-to-cart" value="" class="single_add_to_cart_button button alt is-to-order" data-lightbox="tre-lightbox-order"><?php echo born_translation('on_backorder');?></button>
+                <button type="submit" name="add-to-cart" value="" class="single_add_to_cart_button button alt is-to-order" data-lightbox="tre-lightbox-order">
+                  <?php echo born_translation('on_backorder');?>
+                </button>
 
                 <?php echo output_consultation_cta();?>
 
@@ -149,12 +145,10 @@ $faq = get_field('faq',$product->get_id());
 			<?php woocommerce_template_single_add_to_cart();?>
 		<?php endif; ?>
         
-
-
         <?php if($product->get_sku()):?>
-        <div class="details">
-	        <?php echo born_translation('sku'); ?>: <?php echo $product->get_sku(); ?>
-        </div>
+          <div class="details">
+            <?php echo born_translation('sku'); ?>: <?php echo $product->get_sku(); ?>
+          </div>
         <?php endif;?>
 
         
@@ -162,25 +156,33 @@ $faq = get_field('faq',$product->get_id());
             <div class="inner">
 
                 <?php if($description_tab):?>
-                <div class="tre-accordion">
+                  <div class="tre-accordion">
                     <div class="inner">
-                        <button class="accordion-trigger"><span><?php echo born_translation('desc_tab_title');?></span></button>
-                        <div class="accordion-content" style="">
-                            <div class="inner">
-                                <?php echo $description_tab;?>
-                            </div>
+                      <button class="accordion-trigger">
+                        <span>
+                          <?php echo born_translation('desc_tab_title');?>
+                        </span>
+                      </button>
+                      <div class="accordion-content" style="">
+                        <div class="inner">
+                          <?php echo $description_tab;?>
                         </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
                 <?php endif;?>
 	            
 	            <?php if($instructions):?>
                     <div class="tre-accordion">
                         <div class="inner">
-                            <button class="accordion-trigger"><span><?php echo born_translation('instructions_tab_title');?></span></button>
+                            <button class="accordion-trigger">
+                              <span>
+                                <?php echo born_translation('instructions_tab_title');?>
+                              </span>
+                            </button>
                             <div class="accordion-content" style="">
                                 <div class="inner">
-						            <?php echo $instructions;?>
+						                      <?php echo $instructions;?>
                                 </div>
                             </div>
                         </div>
@@ -190,11 +192,15 @@ $faq = get_field('faq',$product->get_id());
 	            <?php if($faq):?>
                     <div class="tre-accordion">
                         <div class="inner">
-                            <button class="accordion-trigger"><span><?php echo born_translation('faq_tab_title');?></span></button>
+                            <button class="accordion-trigger">
+                              <span>
+                                <?php echo born_translation('faq_tab_title');?>
+                              </span>
+                            </button>
                             <div class="accordion-content" style="">
-                                <div class="inner">
-						            <?php echo $faq;?>
-                                </div>
+                              <div class="inner">
+                                <?php echo $faq;?>
+                              </div>
                             </div>
                         </div>
                     </div>
