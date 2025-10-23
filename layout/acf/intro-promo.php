@@ -27,7 +27,7 @@
 					</div>
                     <?php if($items[0]['link']):?>
 					<div class="cta">
-						<a <?php echo born_acf_link($items[0]['link']);?> class="tre-button-1"><?php echo $items[0]['link']['title'];?></a>
+						<a <?php echo born_acf_link($items[0]['link']);?> class="tre-button-3"><?php echo $items[0]['link']['title'];?></a>
 					</div>
                     <?php endif;?>
 				</div>
@@ -56,7 +56,7 @@
                         </div>
 	                    <?php if($item['link']):?>
                         <div class="cta">
-                            <a <?php echo born_acf_link($item['link']);?> class="tre-button-1"><?php echo $item['link']['title'];?></a>
+                            <a <?php echo born_acf_link($item['link']);?> class="tre-button-3"><?php echo $item['link']['title'];?></a>
                         </div>
 	                    <?php endif;?>
                     </div>
