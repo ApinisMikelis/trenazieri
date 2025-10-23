@@ -9117,6 +9117,28 @@ input[type="file"] + label:hover {
   color: #fff !important;
   background-color: #e07425;
 }
+.tre-button-3 {
+  transition: all 150ms ease;
+  min-width: 165px;
+  height: 60px;
+  border: 2px solid #e07425;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  list-style: circle;
+  font-family: Antonio, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5625rem;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: #e07425;
+}
+.tre-button-3:hover {
+  background-color: #e07425;
+}
 .facetwp-checkbox {
   transition: color 150ms ease;
   font-size: 1rem;

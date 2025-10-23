@@ -5331,6 +5331,27 @@ input[type="file"] + label:hover {
   color: #ffffff !important;
   background-color: #e07425;
 }
+.tre-button-3 {
+  transition: all 150ms ease;
+  min-width: 165px;
+  height: 60px;
+  border: 2px solid #e07425;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  list-style: circle;
+  font-family: "Antonio", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5625rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 600;
+  background-color: #e07425;
+}
+.tre-button-3:hover {
+  color: #ffffff;
+  background-color: #e07425;
+}
 
 .facetwp-checkbox {
   transition: color 150ms ease;
