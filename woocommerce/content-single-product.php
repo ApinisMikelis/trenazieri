@@ -19,6 +19,9 @@ defined( 'ABSPATH' ) || exit;
 
 global $product;
 
+$price = $product->get_price();
+$token = 'LVddhkuihgfd0VPZT3';
+
 /**
  * Hook: woocommerce_before_single_product.
  *
@@ -168,6 +171,15 @@ $faq = get_field('faq',$product->get_id());
               </div>
           <?php endif; ?>
 
+        <?php if(!$product->is_on_sale()): ?>
+          <div
+            data-widget='aizdevums'
+            data-id="<?php echo $token; ?>"
+            data-price="<?php echo $price; ?>"
+            data-color="y"
+            style="margin-top: 10px;"
+          ></div>
+        <?php endif; ?>
         
         <div class="accordion-description">
             <div class="inner">
