@@ -23,7 +23,9 @@
 	if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 		return;
 	}
-    
+
+    $shipping_class_id = $product->get_shipping_class_id();
+  
     $in_shop = false;
     if('in_showroom' === $product->get_meta( '_stock_status' )):
         $in_shop = true;
@@ -82,6 +84,13 @@
 			    }
 		    ?>
         </div>
+
+        <?php if ( empty($shipping_class_id) && is_user_logged_in() ): ?>
+          <p class="no-shipping-class-notice" style="color:red; font-weight:bold;">
+            <img src="https://www.omniva.lv/wp-content/themes/omniva/assets/dist/assets/img/logo/logo-sign.svg" width="25" height="25">
+          </p>
+        <?php endif; ?>
+    
     </div>
 
     <div class="tre-product-img-wrap">
