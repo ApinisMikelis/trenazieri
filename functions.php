@@ -36,6 +36,24 @@ function enqueue_custom_admin_styles( $hook ) {
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_custom_admin_styles' );
 
+
+/**
+ * Adds the Contentsquare UXA script to the <head> of the website.
+ */
+function my_custom_tracking_script() {
+    // Check if the user is NOT logged into the WordPress dashboard
+    // This is a common practice to exclude admin users from tracking data.
+    if ( ! current_user_can( 'administrator' ) && ! is_admin() ) {
+        ?>
+        <script src="https://t.contentsquare.net/uxa/3c8df11e34731.js"></script>
+        <?php
+    }
+}
+
+add_action( 'wp_head', 'my_custom_tracking_script' );
+
+
+
 // enqueue styles.css
 add_action('wp_enqueue_scripts', 'enqueue_styles');
 function enqueue_styles() {
