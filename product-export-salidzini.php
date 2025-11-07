@@ -98,6 +98,11 @@ foreach ( $products as $product ) {
     $sku = $product->get_sku();
     
     $item->addChild('model', htmlspecialchars( $sku ?? '' ) );
+
+    $ean_value = $product->get_meta( '_global_unique_id', true );
+    if ( ! empty( $ean_value ) ) {
+        $item->addChild('ean', htmlspecialchars( $ean_value ) );
+    }
 }
 
 $dom = new DOMDocument('1.0');
