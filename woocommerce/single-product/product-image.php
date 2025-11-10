@@ -136,18 +136,29 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
             </div>
             <?php if ($youtube_video_url):?>
             <div class="video-item" data-lightbox="tre-lightbox-gallery">
-                <img srcset="<?php echo get_template_directory_uri();?>/assets/tmp/product-video-thumb-1.jpg, <?php echo get_template_directory_uri();?>/assets/tmp/product-video-thumb-1@2x.jpg 2x" alt="<?php the_title();?>">
+              <?php
+                $youtube_id = born_extract_youtube_id( $youtube_video_url);
+                $fallback = get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
+                $thumb = $youtube_id 
+                  ? "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" 
+                  : get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
+
+              ?>
+                <img
+                  src="<?php echo $thumb; ?>" 
+                  onerror="this.src='<?php echo $fallback; ?>'"
+                  alt="<?php the_title();?>"
+                  style="width:100%; height:100%; object-fit:cover; object-position:center;display:block;"
+                />
             </div>
             <?php endif;?>
         </div>
-        
-        
-		
+
     </div>
 </div>
 
 <?php if ($youtube_video_url):?>
-    <?php $youtube_id = born_extract_youtube_id( $youtube_video_url);?>
+    
     <div class="tre-lightbox is-video" id="tre-lightbox-gallery" style="opacity: 0; visibility: hidden; pointer-events: none;">
     <div class="inner">
 
