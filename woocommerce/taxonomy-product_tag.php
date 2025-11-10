@@ -20,10 +20,10 @@ defined( 'ABSPATH' ) || exit;
 get_header( 'shop' );
 	
 	// Get the current category ID;
-	$category_id = get_queried_object_id();
+	$tag_id = get_queried_object_id();
 	
 	// Get the meta data using the ID;
-	$term_vals = get_term_meta( $category_id );
+	$term_vals = get_term_meta( $tag_id );
 /**
  * Hook: woocommerce_before_main_content.
  *
@@ -70,8 +70,6 @@ do_action( 'woocommerce_shop_loop_header' );
 
     <div class="sidebar">
 
-        <h1><?php echo get_term( $category_id )->name;?></h1>
-
         <button class="filters-trigger"><span>Filtrēt</span></button>
 
         <style>
@@ -86,43 +84,23 @@ do_action( 'woocommerce_shop_loop_header' );
             <button class="is-close">Hide filters</button>
             
             <?php
-	            if ( is_active_sidebar( 'products-sidebar' ) ) {
-		            dynamic_sidebar( 'products-sidebar' );
+	            if ( is_active_sidebar( 'tags-sidebar' ) ) {
+		            dynamic_sidebar( 'tags-sidebar' );
 	            }
             ?>
-        
-            <!--<div class="facet-wrap is-price">
-                <div class="title accordion-trigger"><?php /*echo born_translation('price_filter_title');*/?></div>
-                    <div class="accordion-content">
-                    <?php /*echo do_shortcode('[facetwp facet="cena"]');*/?>
-                </div>
-            </div>
-    
-            <div class="facet-wrap">
-                <div class="title accordion-trigger"><?php /*echo born_translation('brand_filter_title');*/?></div>
-                <div class="accordion-content">
-                <?php /*echo do_shortcode('[facetwp facet="raotjs"]');*/?>
-                </div>
-            </div>
-    
-            <div class="facet-wrap">
-                <div class="title accordion-trigger"><?php /*echo born_translation('stock_status_filter_title');*/?></div>
-                <div class="accordion-content">
-                <?php /*echo do_shortcode('[facetwp facet="pieejamba"]');*/?>
-                </div>
-            </div>-->
+  
         </div>
 
     </div>
     
     <div class="tre-products-wrapper">
-    <div class="active-filters">
-
-        <?php echo facetwp_display( 'selections' );?>
-
-    </div>
-    <div class="woocommerce">
-    <div class="products">
+      <h1><?php echo get_term( $tag_id )->name;?></h1>
+      <?php echo wpautop( get_term( $tag_id )->description ); ?>
+      <div class="active-filters">
+          <?php echo facetwp_display( 'selections' );?>
+      </div>
+      <div class="woocommerce">
+        <div class="products">
 <?php else:?>
     <?php woocommerce_output_content_wrapper();?>
         <div class="tre-categories">
@@ -137,14 +115,7 @@ do_action( 'woocommerce_shop_loop_header' );
 					
 					if ( woocommerce_product_loop() ) {
 					
-						/**
-						 * Hook: woocommerce_before_shop_loop.
-						 *
-						 * @hooked woocommerce_output_all_notices - 10
-						 * @hooked woocommerce_result_count - 20
-						 * @hooked woocommerce_catalog_ordering - 30
-						 */
-						//do_action( 'woocommerce_before_shop_loop' );
+
 						woocommerce_output_all_notices();
 					
 						woocommerce_product_loop_start();
@@ -223,9 +194,7 @@ do_action( 'woocommerce_shop_loop_header' );
     </div>
     </div>
     </div>
-<?php //else:?>
 
-<?php //endif;?>
 
 
 <?php

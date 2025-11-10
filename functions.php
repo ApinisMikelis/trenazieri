@@ -948,7 +948,16 @@ function disable_woo_commerce_sidebar() {
         'before_title'  => '',
         'after_title'   => '',
     ) );
-}
+
+    register_sidebar( array(
+      'name'          => __( 'Tags Sidebar', 'textdomain' ),
+      'id'            => 'tags-sidebar',
+      'before_widget' => '',
+      'after_widget'  => '',
+      'before_title'  => '',
+      'after_title'   => '',
+  ) );
+  }
 add_action( 'widgets_init', 'tren_register_widget_area' );
 	
 	

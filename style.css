@@ -2,10 +2,11 @@
 Theme Name: Trenazieri
 Author: BORN Digital
 Author URI: https://born.lv/
-Version: 1.0.4
+Version: 1.0.5
 Text Domain: trenazieri
 */
 
+/* Product tags */
 .product-tags {
   display: flex;
   flex-wrap: wrap;
@@ -30,6 +31,7 @@ Text Domain: trenazieri
   color: #909090;
 }
 
+/* ESTO */
 .esto-calculator {
   display: flex;
   align-items: center;
@@ -47,6 +49,7 @@ Text Domain: trenazieri
   }
 }
 
+/* TRE */
 .tre-footer .left {
   display: flex;
 }
@@ -62,4 +65,40 @@ Text Domain: trenazieri
 .tre-footer .left .menu ul li a {
   display: inline-block;
   padding: 5px 0;
+}
+
+.tre-button-3 {
+  transition: all 150ms ease;
+  min-width: 165px;
+  height: 60px;
+  border: 2px solid #e07425;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  list-style: circle;
+  font-family: "Antonio", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5625rem;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 600;
+  background-color: #e07425;
+}
+.tre-button-3:hover {
+  color: #ffffff;
+  background-color: #e07425;
+}
+
+/* WP Blocks */
+.wp-block-columns {
+  display: flex;
+}
+
+.wp-block-column figure {
+  margin: 0;
+}
+
+/* Instagram feed */
+#sb_instagram .sbi_photo_wrap {
+  border: 1px solid #cccccc;
 }
