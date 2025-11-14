@@ -2,7 +2,7 @@
 Theme Name: Trenazieri
 Author: BORN Digital
 Author URI: https://born.lv/
-Version: 1.0.5
+Version: 1.0.6
 Text Domain: trenazieri
 */
 
@@ -92,9 +92,10 @@ Text Domain: trenazieri
 /* WP Blocks */
 .wp-block-columns {
   display: flex;
+  gap: 2rem;
 }
 
-.wp-block-column figure {
+.wp-block-columns .wp-block-column figure {
   margin: 0;
 }
 
