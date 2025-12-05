@@ -180,10 +180,6 @@ $faq = get_field('faq',$product->get_id());
             style="margin-top: 10px;"
           ></div>
         <?php endif; ?>
-
-        <?php if(!$product->is_on_sale() && !$product->is_on_backorder()): 
-            echo do_shortcode('[esto_monthly_payment]');
-        endif; ?>
         
         <div class="accordion-description">
             <div class="inner">
