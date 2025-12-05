@@ -113,7 +113,7 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
             }
               
             ?>
-            <div class="slider-items" data-image-id="<?php echo $attachment_id; ?>" style="opacity: 0;">
+            <div class="slider-items" data-image-id="<?php echo $attachment_id; ?>">
               <img srcset="<?php echo $image_url;?>, <?php echo $image_url_x2;?>?v=2 2x" alt="<?php the_title();?>">
             </div>
           <?php endforeach; ?>
