@@ -74,34 +74,12 @@ if (class_exists('\Redux')) {
         )
     ));
 
-
-    /**
-     * Header options
-     */
-  /*  Redux::setSection('born_options', array(
-        'title' => __('Header Settings', BORN_NAME),
-        'id' => 'general',
-        'desc' => '',
-        'icon' => 'el el-home',
-        'callback' => 'test_redux_callback',
-        'fields' => array(
-            array(
-                "id" => $prefix . "sign_up_link",
-                "desc" => "",
-                'type' => 'text',
-                'title' => __('Sign up link', BORN_NAME),
-                "default" => ""
-            ),
-        )
-    ));*/
-
-
     /**
      * Translations options
      */
 
     $translation_options = array();
-//
+
     foreach ($languages as $lng) {
 
 
@@ -327,7 +305,7 @@ if (class_exists('\Redux')) {
 
 
     }
-//
+
     Redux::setSection('born_options', array(
         'title' => __('Theme Translations', BORN_NAME),
         'id' => 'translations',
@@ -423,12 +401,10 @@ if (class_exists('\Redux')) {
         'id'    => $prefix.'footer_social',
         'type'  => 'icon_with_link',
         'title' => __('Social networks', BORN_NAME),
-        //'std'   => array()
     );
 
     $footer_settings[] = array(
         "title"   => "Footer partner 1 img",
-        //"desc"    => "If checked will hide suggested products in my account",
         "id"      => $prefix . "footer_partner_one",
         "default" => false,
         "type"    => "media"
@@ -436,37 +412,10 @@ if (class_exists('\Redux')) {
 
     $footer_settings[] =   array(
                 "title"   => "Footer partner 2 img",
-                //"desc"    => "If checked will hide suggested products in my account",
                 "id"      => $prefix . "footer_partner_two",
                 "default" => false,
                 "type"    => "media"
             );
-
-/*    foreach ($languages as $lng) {
-
-        $footer_settings[] = array(
-            "id" => $prefix . "header_cta_btn_link" . $lng['code'],
-            "type" => "text",
-            "title" => __('Header cta button link', BORN_NAME) . ' (' . $lng['translated_name'] . ')',
-            "default" => ""
-        );
-
-        $footer_settings[] = array(
-            "id" => $prefix . "header_login" . $lng['code'],
-            "type" => "text",
-            "title" => __('Header login link', BORN_NAME) . ' (' . $lng['translated_name'] . ')',
-            "default" => ""
-        );
-
-        $footer_settings[] = array(
-            "id" => $prefix . "header_register" . $lng['code'],
-            "type" => "text",
-            "title" => __('Header register link', BORN_NAME) . ' (' . $lng['translated_name'] . ')',
-            "default" => ""
-        );
-
-    }*/
-
     /**
      * Footer options
      */
@@ -487,13 +436,6 @@ if (class_exists('\Redux')) {
     $cookies_options = array();
 
     foreach($languages as $lng) {
-
-     /*   $cookies_options[] = array(
-            "id" 		=> $prefix."cookies_title_" . $lng['code'],
-            "type" => "editor",
-            "title" => __('Cookie notification title', BORN_NAME) . ' (' . $lng['translated_name'] . ')',
-            "default" => 'Privātuma politika'
-        );*/
 
         $cookies_options[] = array(
             "id" 		=> $prefix."cookies_text_" . $lng['code'],
@@ -523,10 +465,5 @@ if (class_exists('\Redux')) {
             'fields' => $cookies_options
         )
     );
-
-
-
-
-
 
 }

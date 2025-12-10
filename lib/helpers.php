@@ -95,15 +95,11 @@ function born_get_archive_pagination($post_type, $category = 0, $current = 1, $m
 
 
 	$pagination_args = array(
-//		'base' => $lang .'/'.$archive_slug.'/'.$category_slug.'page/%#%/',
 		'base' => $base . '/page/%#%',
 		'current' => max( $current, get_query_var('paged') ),
 		'format' => '%#%',
 		'type' => 'array',
-		// 'total' => $max_num_pages,
 		'prev_next' => false,
-//		'prev_text' => '<svg width="10px" height="18px"><path fill-rule="evenodd" fill="rgb(0, 117, 101)" d="M9.489,3.101 L3.746,8.844 L9.489,14.586 C10.075,15.172 10.075,16.122 9.489,16.708 C8.903,17.294 7.954,17.294 7.368,16.708 L0.761,10.101 C0.417,9.757 0.300,9.291 0.360,8.844 C0.300,8.396 0.417,7.930 0.761,7.586 L7.368,0.980 C7.954,0.394 8.903,0.394 9.489,0.980 C10.075,1.566 10.075,2.515 9.489,3.101 Z" /></svg><svg width="6px" height="6px"><path fill-rule="evenodd" fill="rgb(0, 117, 101)" d="M3.125,0.344 C4.506,0.344 5.625,1.463 5.625,2.844 C5.625,4.224 4.506,5.344 3.125,5.344 C1.744,5.344 0.625,4.224 0.625,2.844 C0.625,1.463 1.744,0.344 3.125,0.344 Z" /></svg>',
-//		'next_text' => '<svg width="6px" height="6px"><path fill-rule="evenodd" fill="rgb(0, 117, 101)" d="M3.125,0.344 C4.506,0.344 5.625,1.463 5.625,2.844 C5.625,4.224 4.506,5.344 3.125,5.344 C1.744,5.344 0.625,4.224 0.625,2.844 C0.625,1.463 1.744,0.344 3.125,0.344 Z" /></svg><svg width="10px" height="18px"><path fill-rule="evenodd" fill="rgb(0, 117, 101)" d="M9.239,10.101 L2.632,16.708 C2.047,17.294 1.097,17.294 0.511,16.708 C-0.075,16.122 -0.075,15.172 0.511,14.586 L6.254,8.844 L0.511,3.101 C-0.075,2.515 -0.075,1.566 0.511,0.980 C1.097,0.394 2.047,0.394 2.632,0.980 L9.239,7.586 C9.583,7.930 9.700,8.396 9.640,8.844 C9.700,9.291 9.583,9.757 9.239,10.101 Z" /></svg>'
 	);
 
 
@@ -112,29 +108,15 @@ function born_get_archive_pagination($post_type, $category = 0, $current = 1, $m
 
 	$pagination = paginate_links( $pagination_args ) ;
 
-	//print_r($pagination);
-
 	$return = '';
 
 	if( !empty($pagination) ) {
 
-		// $return .= '<div class="arm-pagination">';
-
-		/* foreach($pagination as $index => $page_link) {
-				 if( false !== strpos($page_link, ' dots') ) $pagination[$index] = '<span class="separator"></span>';
-
-
-			}*/
 		foreach ($pagination as $key => $page) {
-			// if($page === '<span class="page-numbers dots">' . __( '&hellip;' ) . '</span>') {
-			// $pagination[$key] = '<li class="separator">/</li>';
-			// } else {
 			$pagination[$key] =  '<li>'.$page.'</li>' ;
-			//  }
 		}
 
 		$return .= implode("\n", $pagination);
-		// $return .= '</div>';
 	}
 
 	return $return;
@@ -169,8 +151,6 @@ function born_get_blog_pagination($category = 0, $current = 1, $max_num_pages = 
 		'current' => max($current, get_query_var('paged')),
 		'type' => 'array',
 		'prev_next' => false,
-		//	'prev_text' => '<svg width="14px" height="24px"><path d="M13.364,21.950 L11.950,23.364 L0.636,12.050 L0.686,12.000 L0.636,11.950 L11.950,0.636 L13.364,2.050 L3.414,12.000 L13.364,21.950 Z"></path></svg>',
-//		'next_text' => '<svg width="14px" height="24px"><path d="M13.364,12.050 L2.050,23.364 L0.636,21.950 L10.586,12.000 L0.636,2.050 L2.050,0.636 L13.364,11.950 L13.314,12.000 L13.364,12.050 Z"></path></svg>'
 	);
 
 	// AJAX request
@@ -183,17 +163,10 @@ function born_get_blog_pagination($category = 0, $current = 1, $max_num_pages = 
 	if (!empty($pagination)) {
 
 		foreach ($pagination as $key => $page) {
-			// if($page === '<span class="page-numbers dots">' . __( '&hellip;' ) . '</span>') {
-			// $pagination[$key] = '<li class="separator">/</li>';
-			// } else {
 			$pagination[$key] = $page;
-			//  }
 		}
 
-
-		// $return .= "<ul>\n\t";
 		$return .= join("\n\t", $pagination);
-		// $return .= "\n</ul>";
 	}
 
 	return $return;
@@ -207,16 +180,9 @@ function born_get_language_switcher($echo = true, $type = 'dropdown')
 		$languages = icl_get_languages('skip_missing=1');
 	}
 	
-	//die(print_r($languages));
-	
 	if (count($languages) < 2) return;
 	
 	$active_lang = '';
-	/*	foreach ($languages as $l) {
-			 if ($l['active']) {
-				 $active_lang = $l;
-			 }
-		 }*/
 	
 	ob_start();
 	?>
@@ -226,15 +192,6 @@ function born_get_language_switcher($echo = true, $type = 'dropdown')
 	if ($l['active']){
 		continue;
 	}
-	//$lang_code = born_get_current_language_code();
-	/* if (strpos($l['url'], '%certificates_page%') !== false) {
-	  $cert_slug = get_global_option('certificates_slug_'.$l['language_code']);
-	  $l['url'] = str_replace('%certificates_page%',$cert_slug,$l['url']);
-  }
-  if (strpos($l['url'], '%news_page%') !== false) {
-	  $news_slug = get_global_option('news_slug_'.$l['language_code']);
-	  $l['url'] = str_replace('%news_page%',$news_slug,$l['url']);
-  }*/
 	?>
     <a href="<?= $l['url']; ?>"><?php echo ucfirst($l['code']);?></a>
 <?php endforeach; ?>
@@ -259,35 +216,15 @@ function born_get_language_switcher_popup($echo = true, $type = 'dropdown')
         $languages = icl_get_languages('skip_missing=1');
     }
     
-    //die(print_r($languages));
-    
     if (count($languages) < 2) return;
     
     $active_lang = '';
-    /*	foreach ($languages as $l) {
-              if ($l['active']) {
-                  $active_lang = $l;
-              }
-          }*/
     
     ob_start();
     ?>
     
     
-    <?php foreach ($languages as $l):
-   /* if ($l['active']){
-        continue;
-    }*/
-    //$lang_code = born_get_current_language_code();
-    /* if (strpos($l['url'], '%certificates_page%') !== false) {
-        $cert_slug = get_global_option('certificates_slug_'.$l['language_code']);
-        $l['url'] = str_replace('%certificates_page%',$cert_slug,$l['url']);
-    }
-    if (strpos($l['url'], '%news_page%') !== false) {
-        $news_slug = get_global_option('news_slug_'.$l['language_code']);
-        $l['url'] = str_replace('%news_page%',$news_slug,$l['url']);
-    }*/
-    ?>
+    <?php foreach ($languages as $l): ?>
    
    <?php if ($l['code'] != 'en'):?>
     <li class="<?php echo $l['code'];?>"><a href="<?= $l['url']; ?>"><span><?= $l['native_name'];?></span></a></li>
@@ -301,8 +238,6 @@ function born_get_language_switcher_popup($echo = true, $type = 'dropdown')
       <?php endif;?>
    
    <?php endforeach;?>
-    
-    
     
     <?php
     $html_content = ob_get_contents();
@@ -320,9 +255,6 @@ function born_get_social_networks()
 	return array(
 		'facebook-f' => 'Facebook',
 		'instagram' => 'Instagram',
-//		'linkedin-in' => 'LinkedIn',
-//		'twitter' => 'Twitter',
-//		'youtube' => 'YouTube',
 	);
 }
 
@@ -410,10 +342,6 @@ function born_render_menu($args)
 	if (!isset($args['container'])) {
 		$args['container'] = '';
 	}
-
-	/*if (isset($args['menu'])) {
-		$args['menu'] = $args['menu'];
-	}*/
 
 	if (isset($args['walker'])) {
 		$args['walker'] = new $args['walker']();
@@ -625,7 +553,6 @@ function born_get_select_term_list_cat($taxonomy)
 
 	if (!empty($terms) && !is_wp_error($terms)) {
 		foreach ($terms as $t) {
-			// print_r($t);
 			$list[$t->term_id] = $t->name;
 		}
 	}
@@ -726,7 +653,6 @@ function born_get_archive_permalink($post_type)
 
 
 	$slug = get_global_option($post_type.'_slug_'.$lang_code, 'options');
-	//$slug = get_field($post_type.'_slug_'.$lang_code, 'options');
 	$slug = !empty($slug) ? sanitize_title($slug) : $post_type;
 
 	$permalink = $base . $slug;

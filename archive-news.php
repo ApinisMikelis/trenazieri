@@ -11,8 +11,6 @@ $args = array(
 	'post_type'      => 'news',
 	'post_status'    => 'publish',
 	'suppress_filters' => false,
-	//'orderby'        => 'menu_order',
-	//'order'          => 'DESC',
 	'paged'          => $paged,
 	'posts_per_page' => get_option( 'posts_per_page' ),
 );

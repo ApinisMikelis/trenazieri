@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! empty( $breadcrumb ) ) {
 
-	//echo $wrap_before;
 	echo '<div class="tre-breadcrumbs">';
 
 	foreach ( $breadcrumb as $key => $crumb ) {
@@ -46,13 +45,8 @@ if ( ! empty( $breadcrumb ) ) {
 		
 		echo $after;
 
-		/*if ( sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo '>';
-		}*/
 	}
 	
 	echo '</div>';
-
-	//echo $wrap_after;
 
 }

@@ -144,16 +144,6 @@ wp_footer();
 
     jQuery(window).on('load', function() {
 
-       /* if(jQuery('body.woocommerce-cart, body.product-template-default').length) {
-             console.log('HAS CART');
-        }*/
-
-       // else {
-
-
-
-           // jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up"></div><div class="quantity-button quantity-down"></div></div>').insertAfter('.tre-quantity input');
-
             jQuery('.tre-quantity').each(function() {
 
                 var spinner = jQuery(this),
@@ -197,8 +187,6 @@ wp_footer();
                 });
 
             });
-
-       // }
 
     });
 </script>

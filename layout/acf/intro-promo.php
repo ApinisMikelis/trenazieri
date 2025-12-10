@@ -1,11 +1,6 @@
 <?php if (!defined('WPINC')) die; ?>
 
-<?php
-	$items = get_field('items'); // Get the title field
-    
-
-?>
-
+<?php $items = get_field('items'); ?>
 
 <div class="tre-intro-banners">
 	<div class="inner">

@@ -1,7 +1,7 @@
 <?php if (!defined('WPINC')) die; ?>
 
 <?php
-	$items = get_field('items'); // Get the title field
+	$items = get_field('items');
 	$background_image = get_field('background_image');
 ?>
 
