@@ -121,26 +121,6 @@ $footer_brands = get_field('footer_brands', 'options');
                     </ul>
                 </div>
 
-                <a href="http://born.lv" target="_blank" rel="noreferrer" class="made-by-born" title="Web izstrāde BORN DIGITAL">
-                    <span><?php echo born_translation('developed_by');?></span>
-                    <span class="born-logo">
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                        <span class="item"></span>
-                    </span>
-                </a>
-
             </div>
 
         </div>
