@@ -31,6 +31,10 @@ Text Domain: trenazieri
   color: #909090;
 }
 
+.private {
+  border: 2px solid red;
+}
+
 /* ESTO */
 .esto-calculator {
   display: flex;
