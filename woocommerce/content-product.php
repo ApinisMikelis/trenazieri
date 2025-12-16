@@ -105,21 +105,13 @@
                 <span><?php echo born_translation('in_showroom');?></span>
             </div>
         <?php endif;?>
+
         <span><?php echo $product->get_title();?></span>
     </h2>
-    <?php
-		
-		//woocommerce_show_product_loop_sale_flash();
-		
-  
-		
-		//woocommerce_template_loop_product_title();
-		
-		woocommerce_template_loop_rating();
-  
-		woocommerce_template_loop_price();
-        
-        ?>
+    <?php 
+		  woocommerce_template_loop_rating();
+      woocommerce_template_loop_price();
+    ?>
 	<?php if ( $product->is_in_stock() || $product->is_on_backorder() ): ?>
         <div class="stock">
         <span>
@@ -135,8 +127,52 @@
 	<?php endif; ?>
         <?php
 		
-		woocommerce_template_loop_product_link_close();
-		
-		//woocommerce_template_loop_add_to_cart();
+		woocommerce_template_loop_product_link_close();		
 	?>
+
+  <?php if (is_user_logged_in()) :
+    $tags = get_the_terms($product->get_id(), 'product_tag');
+    if ($tags && !is_wp_error($tags)) :
+        ?>
+        <div class="admin-product-tags">
+            <?php foreach ($tags as $tag) : ?>
+                <span class="tag">
+                    <a href="<?php echo esc_url(get_term_link($tag)); ?>">
+                        <?php echo esc_html($tag->name); ?>,
+                    </a>
+                </span>
+            <?php endforeach; ?>
+        </div>
+
+    <?php
+      $post_id = $product->get_id();
+
+      // Pull Yoast's stored link counts
+      $internal_links = (int) get_post_meta($post_id, '_yoast_wpseo_internal_links_count', true);
+      $external_links = (int) get_post_meta($post_id, '_yoast_wpseo_outbound_links_count', true);
+      // Note: Some Yoast versions use slightly different keys — fallback if needed
+      if ($internal_links === 0) {
+          $internal_links = (int) get_post_meta($post_id, '_yoast_wpseo_linkdex_internal_links_count', true);
+      }
+      if ($external_links === 0) {
+          $external_links = (int) get_post_meta($post_id, '_yoast_wpseo_linkdex_outbound_links_count', true);
+      }
+  
+      if ($internal_links > 0 || $external_links > 0) :
+      ?>
+          <div class="admin-link-info" style="font-size:11px; color:#666; margin:6px 0; font-style:italic;">
+              Links: 
+              <?php if ($internal_links > 0) : ?>
+                  <strong>Internal: <?php echo $internal_links; ?></strong>
+              <?php endif; ?>
+              <?php if ($internal_links > 0 && $external_links > 0) echo ' | '; ?>
+              <?php if ($external_links > 0) : ?>
+                  <strong>External: <?php echo $external_links; ?></strong>
+              <?php endif; ?>
+          </div>
+      <?php endif; ?>
+      
+    <?php endif; ?>
+
+  <?php endif; ?>
 </div>

@@ -2,11 +2,19 @@
 Theme Name: Trenazieri
 Author: BORN Digital
 Author URI: https://born.lv/
-Version: 1.0.6
+Version: 1.0.7
 Text Domain: trenazieri
 */
 
 /* Product tags */
+.admin-product-tags {
+  position: absolute;
+}
+
+.admin-product-tags .tag {
+  font-size: 0.8rem;
+}
+
 .product-tags {
   display: flex;
   flex-wrap: wrap;
