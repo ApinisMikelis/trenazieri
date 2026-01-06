@@ -1111,3 +1111,56 @@ function change_empty_cart_button_text() {
     return get_bloginfo('name'); // Fallback to site title if no static homepage is set
 }
  
+
+
+add_action( 'wp_head', 'tre_inject_product_schema' );
+
+function tre_inject_product_schema() {
+  if ( ! is_product() ) {
+    return;
+  }
+
+  global $product;
+
+  if ( ! is_a( $product, 'WC_Product' ) ) {
+    $product = wc_get_product( get_the_ID() );
+  }
+
+  if ( $product ) {
+    $schema = [
+        "@context" => "https://schema.org/",
+        "@type"    => "Product",
+        "name"     => $product->get_name(),
+        "image"    => wp_get_attachment_url( $product->get_image_id() ),
+        "description" => wp_strip_all_tags( $product->get_short_description() ),
+        "sku"      => $product->get_sku(),
+        "brand"    => [
+          "@type" => "Brand",
+          "name"  => $product->get_attribute('brand') ?: get_bloginfo('name')
+        ],
+        "offers"   => [
+          "@type"         => "Offer",
+          "url"           => get_permalink( $product->get_id() ),
+          "priceCurrency" => get_woocommerce_currency(),
+          "price"         => $product->get_price(),
+          "availability"  => "https://schema.org/" . ( $product->is_in_stock() ? 'InStock' : 'OutOfStock' ),
+          "itemCondition" => "https://schema.org/NewCondition"
+        ]
+    ];
+
+    $attributes = $product->get_attributes();
+    foreach ( $attributes as $attribute ) {
+      $name = wc_attribute_label( $attribute->get_name() );
+      $value = $product->get_attribute( $attribute->get_name() );
+      if ( $value ) {
+        $schema["additionalProperty"][] = [
+          "@type" => "PropertyValue",
+          "name"  => $name,
+          "value" => $value
+        ];
+      }
+    }
+
+    echo "\n" . '<script type="application/ld+json">' . json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+  }
+}
