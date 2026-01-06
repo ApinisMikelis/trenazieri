@@ -1176,3 +1176,26 @@ function tre_inject_brand_schema() {
     }
   }
 }
+
+add_action('wp_head', 'tre_inject_schemas_final', 5);
+
+function tre_inject_schemas_final() {
+  $schema_folder = get_stylesheet_directory() . '/schemas/';
+
+  if ( is_product_category() || is_shop() ) {
+    $obj = get_queried_object();  
+    $is_top_level = is_shop() || ( isset($obj->parent) && $obj->parent === 0 );
+
+    if ( $is_top_level ) {
+      $file = $schema_folder . 'category-schema.php';
+      echo "";
+    } else {
+      $file = $schema_folder . 'subcategory-schema.php';
+      echo "";
+    }
+
+    if ( file_exists( $file ) ) { 
+      include $file;             
+    }
+  }
+}
