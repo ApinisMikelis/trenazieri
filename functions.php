@@ -1164,3 +1164,15 @@ function tre_inject_product_schema() {
     echo "\n" . '<script type="application/ld+json">' . json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
   }
 }
+
+add_action( 'wp_head', 'tre_inject_brand_schema' );
+
+function tre_inject_brand_schema() {
+  if ( is_front_page() ) {
+    $schema_path = get_template_directory() . '/schemas/brand-schema.php';
+
+    if ( file_exists( $schema_path ) ) {
+      include $schema_path;
+    }
+  }
+}
