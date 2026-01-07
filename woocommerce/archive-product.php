@@ -176,6 +176,7 @@ do_action( 'woocommerce_shop_loop_header' );
 
     <!-- Category FAQ -->
     <?php if ($category_faq):?>
+      <?php echo get_faq_schema($category_faq); ?>
         <div class="tre-faq">
           <div class="tre-container">
             <div class="inner">

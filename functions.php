@@ -1199,3 +1199,30 @@ function tre_inject_schemas_final() {
     }
   }
 }
+
+function get_faq_schema($faq_data) {
+  if (empty($faq_data) || !is_array($faq_data)) {
+    return '';
+  }
+
+  $schema = [
+    '@context' => 'https://schema.org',
+    '@type'    => 'FAQPage',
+    'mainEntity' => []
+  ];
+
+  foreach ($faq_data as $faq) {
+    if (!empty($faq['title']) && !empty($faq['text'])) {
+      $schema['mainEntity'][] = [
+        '@type' => 'Question',
+        'name'  => wp_strip_all_tags($faq['title']),
+        'acceptedAnswer' => [
+          '@type' => 'Answer',
+          'text'  => wp_kses_post($faq['text'])
+        ]
+      ];
+    }
+  }
+
+  return '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+}
