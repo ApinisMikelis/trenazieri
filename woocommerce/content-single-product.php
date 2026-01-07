@@ -271,6 +271,19 @@ $faq = get_field('faq',$product->get_id());
           </div>
         </div>
 
+        <div class="tre-accordion">
+          <div class="inner">
+            <button class="accordion-trigger">
+              <span><?php echo born_translation('reviews_tab_title');?></span>
+            </button>
+            <div class="accordion-content">
+              <div class="inner">
+                <?php echo do_shortcode('[cusrev_all_reviews sort="DESC" sort_by="date" per_page="10" show_summary_bar="true" show_media="true" show_products="false" products="current" product_reviews="true" shop_reviews="true" inactive_products="false" show_replies="false" show_more="5" min_chars="0" avatars="initials" users="all" add_review="true" schema_markup="true"]'); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
        

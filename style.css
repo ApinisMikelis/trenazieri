@@ -1,8 +1,8 @@
 /*
 Theme Name: Trenazieri
-Author: BORN Digital
-Author URI: https://born.lv/
-Version: 1.0.7
+Author: Miķelis Apinis
+Author URI: https://mikelis.lv/
+Version: 1.0.9.8
 Text Domain: trenazieri
 */
 
@@ -114,4 +114,138 @@ Text Domain: trenazieri
 /* Instagram feed */
 #sb_instagram .sbi_photo_wrap {
   border: 1px solid #cccccc;
+}
+
+/* Reviews */
+.cr-all-reviews-shortcode {
+  width: 100%;
+}
+
+.cr-all-reviews-shortcode .cr-summaryBox-wrap {
+  flex-direction: column;
+}
+
+.cr-all-reviews-shortcode .cr-summaryBox-wrap .cr-summary-separator {
+  width: 100%;
+  height: 4px;
+  background-color: #ffffff;
+}
+
+.cr-all-reviews-shortcode
+  .cr-summaryBox-wrap
+  .cr-summary-separator
+  .cr-summary-separator-int,
+.cr-all-reviews-shortcode .cr-ajax-search,
+.cr-all-reviews-shortcode .cr-count-row {
+  display: none;
+}
+
+.cr-all-reviews-shortcode .cr-review-form-item,
+.cr-review-form-rating-overall .cr-review-form-rating,
+.cr-all-reviews-shortcode .cr-review-form-comment,
+.cr-all-reviews-shortcode .cr-review-form-ne,
+.cr-all-reviews-shortcode .cr-review-form-buttons {
+  max-width: 100%;
+}
+
+.cr-all-reviews-shortcode .cr-review-form-buttons {
+  padding: 0;
+}
+
+.cr-all-reviews-shortcode
+  .cr-summaryBox-wrap.cr-summaryBox-add-review
+  .ivole-summaryBox {
+  width: 100%;
+}
+
+.cr-all-reviews-shortcode .cr-summaryBox-wrap .cr-add-review-wrap {
+  padding: 20px;
+}
+
+.cr-all-reviews-shortcode ol.commentlist li .cr-comment-text {
+  border: none;
+  padding: 0;
+}
+
+.cr-all-reviews-shortcode
+  ol.commentlist
+  li
+  .cr-comment-text
+  .cr-rating-product-name {
+  flex-direction: column;
+  align-items: self-start;
+}
+
+.cr-all-reviews-shortcode ol li.review .comment_container .cr-avatar {
+  border-radius: 100% !important;
+}
+
+.cr-all-reviews-shortcode ol.commentlist li.review::before {
+  display: none !important;
+}
+
+.cr-all-reviews-shortcode ol.commentlist li.review {
+  padding: 0 !important;
+}
+
+.cr-all-reviews-shortcode ol.commentlist li .cr-comment-text p {
+  margin: 0;
+}
+
+.tre-product-single
+  .inner
+  div.summary
+  .accordion-description
+  .tre-accordion
+  .tre-table-wrapper {
+  display: block;
+  margin: 0 auto;
+}
+
+.tre-product-single
+  .inner
+  div.summary
+  .accordion-description
+  .tre-accordion
+  .tre-table-wrapper
+  .inner-wrapper {
+  padding: 0;
+}
+
+.tre-product-single
+  .inner
+  div.summary
+  .accordion-description
+  .tre-accordion
+  .tre-table-wrapper
+  .inner-wrapper
+  .cr-histogramTable {
+  max-width: 100%;
+}
+
+.cr-histogramTable .ivole-meter {
+  background: #f2f2f2;
+  height: 15px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.cr-histogramTable .ivole-meter .ivole-meter-bar {
+  background: #e07425;
+  background: linear-gradient(to right, #e07425, #ffa04d);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cr-histogramTable .ivole-meter .ivole-meter-bar:before {
+  display: none;
+}
+
+.cr-histogramTable tr.ivole-histogramRow .ivole-histogramCell1 {
+  min-width: 80px;
+}
+
+.cr-histogramTable tr.ivole-histogramRow .ivole-histogramCell3 {
+  min-width: 50px;
 }
