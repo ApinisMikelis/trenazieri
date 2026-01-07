@@ -50,6 +50,7 @@ do_action( 'woocommerce_shop_loop_header' );
 
 ?>
 <?php if ( $term_vals[ 'display_type' ][ 0 ] != 'subcategories'  && !is_shop()):?>
+  <?php $category_name = get_term( $category_id )->name; ?>
   <div class="tre-products">
     <div class="tre-container">
       <div class="inner">
@@ -64,7 +65,7 @@ do_action( 'woocommerce_shop_loop_header' );
 
         <div class="sidebar">
 
-          <h1><?php echo get_term( $category_id )->name;?></h1>
+          <h1><?php echo $category_name;?></h1>
           <button class="filters-trigger"><span>Filtrēt</span></button>
 
           <style>
@@ -86,6 +87,47 @@ do_action( 'woocommerce_shop_loop_header' );
         </div>
   
         <div class="tre-products-wrapper">
+          <?php 
+            $term = get_queried_object();
+              
+            if ( $term && isset( $term->term_id ) ) {
+              $product_ids = get_posts( array(
+                'post_type'      => 'product',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+                'fields'         => 'ids',
+                'tax_query'      => array(
+                  array(
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'term_id',
+                    'terms'    => $term->term_id,
+                  ),
+                ),
+              ) );
+
+              if ( ! empty( $product_ids ) ) {
+                $prices = array();
+
+                foreach ( $product_ids as $id ) {
+                  $product = wc_get_product( $id );
+                  if ( $product ) {
+                    $prices[] = $product->get_price();
+                  }
+                }
+
+                $prices = array_filter( $prices );
+                
+                if ( ! empty( $prices ) ) {
+                  $min_price = min( $prices );
+                  $max_price = max( $prices );
+
+                  
+                  echo '<strong>' . $category_name . '</strong> pieejami cenu diapazonā no ';
+                  echo '<strong>' . wc_price($min_price) . '</strong> līdz <strong>' . wc_price($max_price) . '</strong>';
+                }
+              }
+            }
+          ?>
           <div class="active-filters">
             <?php echo facetwp_display( 'selections' );?>
           </div>
@@ -98,6 +140,7 @@ do_action( 'woocommerce_shop_loop_header' );
       <div class="inner">
         <div class="items-grid">
 <?php endif;?>
+
     
 <?php
 					
