@@ -2,7 +2,7 @@
 Theme Name: Trenazieri
 Author: Miķelis Apinis
 Author URI: https://mikelis.lv/
-Version: 1.0.9.8
+Version: 1.1.0.3
 Text Domain: trenazieri
 */
 
@@ -99,6 +99,16 @@ Text Domain: trenazieri
 .tre-button-3:hover {
   color: #ffffff;
   background-color: #e07425;
+}
+
+/* Blog */
+.single-news ol.wp-block-list li > ul li {
+  padding-left: 50px !important;
+  margin-bottom: 20px !important;
+}
+
+.single-news ol.wp-block-list li > ul li::after {
+  display: none;
 }
 
 /* WP Blocks */
