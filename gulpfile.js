@@ -2,7 +2,7 @@
 
 const { src, dest, watch } = require("gulp");
 const gulp = require("gulp");
-const sass = require("gulp-sass")(require("node-sass"));
+const sass = require("gulp-sass")(require("sass"));
 const concat = require("gulp-concat");
 const rename = require("gulp-rename");
 const cssmin = require("gulp-css");
