@@ -14,13 +14,12 @@ if (
 
 $xml_file_path = __DIR__ . '/export/rd.xml';
 
-// RD Electronics usually expects a <products> root or similar based on the single <product> node shown
 $args = array(
     'status'     => 'publish',
     'limit'      => -1,
     'return'     => 'objects',
     'visibility' => 'catalog',
-    'stock_status' => 'instock', // Optimization: only get instock items
+    'stock_status' => 'instock',
 );
 
 $products = wc_get_products( $args );
@@ -29,26 +28,30 @@ $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><products/>')
 
 foreach ( $products as $product ) {
     
-    // REQUIREMENT 1: EAN must be set
+    $export_settings = $product->get_meta( 'xml_export', true );
+    if ( empty( $export_settings ) ) continue;
+    
+    if ( is_array( $export_settings ) ) {
+        if ( ! in_array( 'rd', $export_settings ) ) continue;
+    } else {
+        if ( ! preg_match( '/"rd"/', $export_settings ) ) continue;
+    }
+
     $ean = $product->get_meta( '_global_unique_id', true );
     if ( empty( $ean ) ) continue;
 
-    // REQUIREMENT 2: Stock must be at least 2
     $stock_quantity = $product->get_stock_quantity();
     if ( $stock_quantity < 2 ) continue;
 
     $node = $xml->addChild('product');
-    
-    // Product Code & URL
     $node->addChild('product_code', $product->get_sku());
+    
     $url_node = $node->addChild('url');
-    // Using CDATA for URLs and Names as per screenshot
     $dom_url = dom_import_simplexml($url_node);
     $dom_url->appendChild($dom_url->ownerDocument->createCDATASection($product->get_permalink()));
 
-    // Names (Multilingual)
     $names = $node->addChild('names');
-    $langs = ['EN' => 'en', 'LV' => 'lv', 'RU' => 'ru']; // Map as needed
+    $langs = ['EN' => 'en', 'LV' => 'lv', 'RU' => 'ru']; 
     foreach ($langs as $label => $code) {
         $name_node = $names->addChild('name', '');
         $name_node->addAttribute('lang', $label);
@@ -56,36 +59,38 @@ foreach ( $products as $product ) {
         $dom_name->appendChild($dom_name->ownerDocument->createCDATASection($product->get_name()));
     }
 
-    // Descriptions (Multilingual)
     $descriptions = $node->addChild('descriptions');
     foreach ($langs as $label => $code) {
         $desc_node = $descriptions->addChild('description', '');
         $desc_node->addAttribute('lang', $code);
         $dom_desc = dom_import_simplexml($desc_node);
-        // Note: RD screenshot shows HTML inside CDATA
-        $dom_desc->appendChild($dom_desc->ownerDocument->createCDATASection($product->get_description()));
+        $short_desc = $product->get_short_description();
+        $dom_desc->appendChild($dom_desc->ownerDocument->createCDATASection($short_desc));
     }
 
-    // Category
     $categories = wc_get_product_terms( $product->get_id(), 'product_cat', array( 'fields' => 'names' ) );
     $category_text = !empty($categories) ? $categories[0] : 'General';
     $cat_node = $node->addChild('category');
     $dom_cat = dom_import_simplexml($cat_node);
     $dom_cat->appendChild($dom_cat->ownerDocument->createCDATASection($category_text));
 
-    // EAN, Brand, Price, Stock
     $node->addChild('ean', $ean);
     $brand = $product->get_attribute('pa_razotajs') ?: '';
     $node->addChild('brand', $brand);
     
-    $price_node = $node->addChild('price', number_format($product->get_price(), 2, '.', ''));
-    $price_node->addAttribute('vat', '21'); // Adjust if your VAT varies
+    // Price Logic: x = [regular] - 15%. If x < [sale], use [sale].
+    $regular_price = (float) $product->get_regular_price();
+    $sale_price    = (float) $product->get_sale_price();
+    $calculated_x  = $regular_price * 0.85;
+    
+    $final_price = ($sale_price > 0 && $calculated_x < $sale_price) ? $sale_price : $calculated_x;
+
+    $price_node = $node->addChild('price', number_format($final_price, 2, '.', ''));
+    $price_node->addAttribute('vat', '21'); 
     
     $node->addChild('stock', $stock_quantity);
 
-    // Attributes (Color, Material, etc)
     $attributes_node = $node->addChild('attributes');
-    
     $color = $product->get_attribute('pa_krasa');
     if($color) {
         $attr = $attributes_node->addChild('attribute', '');
@@ -94,14 +99,12 @@ foreach ( $products as $product ) {
         $dom_attr->appendChild($dom_attr->ownerDocument->createCDATASection($color));
     }
 
-    // Dimensions
     $dims = $node->addChild('dimensions');
     $dims->addChild('length', $product->get_length() . 'cm');
     $dims->addChild('width', $product->get_width() . 'cm');
     $dims->addChild('height', $product->get_height() . 'cm');
     $dims->addChild('weight', $product->get_weight() . 'kg');
 
-    // Images
     $images_node = $node->addChild('images');
     $main_img_id = $product->get_image_id();
     if ($main_img_id) {
@@ -111,7 +114,6 @@ foreach ( $products as $product ) {
         $dom_m->appendChild($dom_m->ownerDocument->createCDATASection($main_url));
     }
 
-    // Gallery
     $gallery_ids = $product->get_gallery_image_ids();
     if (!empty($gallery_ids)) {
         $gallery_node = $images_node->addChild('gallery');
@@ -124,7 +126,6 @@ foreach ( $products as $product ) {
     }
 }
 
-// Formatting and Saving
 $dom = new DOMDocument('1.0');
 $dom->preserveWhiteSpace = false;
 $dom->formatOutput = true;
