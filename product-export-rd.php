@@ -83,9 +83,10 @@ foreach ( $products as $product ) {
     $sale_price    = (float) $product->get_sale_price();
     $calculated_x  = $regular_price * 0.85;
     
-    $final_price = ($sale_price > 0 && $calculated_x < $sale_price) ? $sale_price : $calculated_x;
+    $final_price_gross = ($sale_price > 0 && $calculated_x < $sale_price) ? $sale_price : $calculated_x;
+    $final_price_net = $final_price_gross / 1.21;
 
-    $price_node = $node->addChild('price', number_format($final_price, 2, '.', ''));
+    $price_node = $node->addChild('price', number_format($final_price_net, 2, '.', ''));
     $price_node->addAttribute('vat', '21'); 
     
     $node->addChild('stock', $stock_quantity);
