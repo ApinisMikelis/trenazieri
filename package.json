@@ -4,15 +4,16 @@
   "description": "WordPress Theme",
   "main": "index.js",
   "scripts": {
-    "sass:compile": "sass assets/src/scss/main.scss:assets/dist/css/sass-output.css --no-source-map",
-    "css:concat": "concat -o assets/dist/css/combined.css assets/dist/css/sass-output.css assets/src/css/main.css",
-    "css:minify": "sass assets/dist/css/combined.css:assets/dist/css/app.min.css --style compressed --no-source-map",
-    "clean:dist": "rimraf assets/dist/css/sass-output.css assets/dist/css/combined.css assets/dist/css/main.css",
+    "sass:compile": "sass assets/src/scss/main.scss assets/dist/css/sass-output.css",
+    "css:concat": "concat -o assets/dist/css/combined.css assets/dist/css/sass-output.css",
+    "css:minify": "sass assets/dist/css/combined.css assets/dist/css/combined.min.css --style compressed",
+    "clean:dist": "rimraf assets/dist/css/sass-output.css",
     "compile": "npm-run-all sass:compile css:concat css:minify clean:dist",
-    "watch:sass-compile": "sass --watch assets/src/scss/main.scss:assets/dist/css/sass-output.css --no-source-map",
+    "watch:sass-compile": "sass --watch assets/src/scss/main.scss:assets/dist/css/sass-output.css",
     "watch:concat": "npm-run-all --sequential css:concat",
     "watch:minify-clean": "npm-run-all --sequential css:minify clean:dist",
-    "watch": "npm-run-all --parallel watch:sass-compile 'watch:concat' watch:minify-clean"
+    "build": "gulp",
+    "watch": "gulp watchAll"
   },
   "keywords": [
     "wordpress",
