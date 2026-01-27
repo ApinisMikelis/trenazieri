@@ -1,13 +1,11 @@
 <?php
 
 define('AUTOMATIC_UPDATER_DISABLED', true);
-
 require 'vendor/autoload.php';
-	
+
 add_theme_support( 'woocommerce' );
 
-function allow_svg_upload($mimes)
-{
+function allow_svg_upload($mimes) {
 	$mimes['svg'] = 'image/svg';
 	return $mimes;
 }
@@ -15,50 +13,40 @@ function allow_svg_upload($mimes)
 add_filter('upload_mimes', 'allow_svg_upload');
 
 function enqueue_custom_admin_styles( $hook ) {
-  // Check to ensure we are only loading the CSS on the WooCommerce Products list screen
-  // The screen ID for the products list is typically 'edit.php' with the 'post_type=product' query arg.
   if ( 'edit.php' !== $hook ) {
-      return;
+    return;
   }
   
-  // Additional check for the correct post type
   if ( !isset( $_GET['post_type'] ) || $_GET['post_type'] !== 'product' ) {
-      return;
+    return;
   }
 
-  // Enqueue the stylesheet from your theme's root directory
   wp_enqueue_style( 
-      'custom_admin_css', 
-      get_template_directory_uri() . '/admin-style.css', 
-      array(), 
-      wp_get_theme()->get('Version') 
+    'custom_admin_css', 
+    get_template_directory_uri() . '/admin-style.css', 
+    array(), 
+    wp_get_theme()->get('Version') 
   );
 }
+
 add_action( 'admin_enqueue_scripts', 'enqueue_custom_admin_styles' );
 
 
-/**
- * Adds the Contentsquare UXA script to the <head> of the website.
- */
-function my_custom_tracking_script() {
-    // Check if the user is NOT logged into the WordPress dashboard
-    // This is a common practice to exclude admin users from tracking data.
-    if ( ! current_user_can( 'administrator' ) && ! is_admin() ) {
-        ?>
-        <script src="https://t.contentsquare.net/uxa/3c8df11e34731.js"></script>
-        <?php
-    }
+function contentsquare_tracking_script() {
+  if (!current_user_can( 'administrator' ) && ! is_admin()) { ?>
+    <script src="https://t.contentsquare.net/uxa/3c8df11e34731.js"></script>
+  <?php }
 }
 
-add_action( 'wp_head', 'my_custom_tracking_script' );
+add_action('wp_head', 'contentsquare_tracking_script');
 
 
-
-// enqueue styles.css
 add_action('wp_enqueue_scripts', 'enqueue_styles');
+
 function enqueue_styles() {
   wp_enqueue_style('styles', get_template_directory_uri() . '/style.css', array(), wp_get_theme()->get('Version'));
 }
+
 
 try {
 	require_once __DIR__ . '/lib/constants.php';
@@ -79,19 +67,15 @@ try {
 	require_once __DIR__ . '/lib/acf-options.php';
 	require_once __DIR__ . '/lib/Schemas.php';
 
-	/**
-	 * MENUS
-	 */
 	$BORN_FRAMEWORK->Menus->batchAdd([
 		'top-menu-left'   => 'Top menu left',
-        'top-menu-right'   => 'Top menu right',
+    'top-menu-right'   => 'Top menu right',
 		'main-menu'   => 'Main menu',
 		'main-menu-mobile'   => 'Main menu mobile',
 		'footer-menu-left'   => 'Footer menu left',
 		'footer-menu-right'   => 'Footer menu right',
     'footer-categories-menu-1'   => 'Footer categories menu 1',
     'footer-categories-menu-2'   => 'Footer categories menu 2',
-		
 	])->register();
 
 } catch (\Exception $e) {
@@ -101,14 +85,15 @@ try {
 		"\nTRACE:\n" . $e->getTraceAsString()
 		, 0
 	);
-	add_action('admin_notices', function () use ($e) {
-		?>
-       <div class="notice notice-error">
-           <h3><?php printf(esc_html__('An error encountered while setting up %s theme:', BORN_NAME), BORN_NAME_PRETTY); ?></h3>
-           <pre><?php echo $e->getMessage(); ?></pre>
-       </div>
-		<?php
-	});
+
+	add_action('admin_notices', function () use ($e) { ?>
+    <div class="notice notice-error">
+      <h3>
+        <?php printf(esc_html__('An error encountered while setting up %s theme:', BORN_NAME), BORN_NAME_PRETTY); ?>
+      </h3>
+      <pre><?php echo $e->getMessage(); ?></pre>
+    </div>
+  <?php });
 }
 
 if (class_exists('Schemas')) {
@@ -127,31 +112,22 @@ add_image_size('mega-banner-x2', 1332, 1068,array('center','center') );
 add_image_size('mega-thumb', 142, 142,array('center','center') );
 
 add_image_size('brand-slider', 340, 0 );
-
 add_image_size('single-promo-banner', 800, 800,array('center','center') );
 add_image_size('single-promo-banner-x2', 1600, 1600,array('center','center') );
-	
 add_image_size('brand-logo-small', 124, 46 );
 add_image_size('tren_woocommerce_single',0,740);
-	
 add_image_size('tre-woo-gal-thumb', 104, 136,array('center','center') );
 add_image_size('tre-woo-gal-thumb-x2', 208, 272,array('center','center') );
-
 add_image_size('feature-block', 685, 476,array('center','center') );
 add_image_size('feature-block-x2', 1370, 952,array('center','center') );
-
-
 add_image_size('portfolio', 450, 325,array('center','center') );
 add_image_size('portfolio-x2', 900, 650,array('center','center') );
-
 add_image_size('contacts-icon', 75, 75 );
 
 // Disable WordPress' automatic image scaling feature
 add_filter( 'big_image_size_threshold', '__return_false' );
 
 /** wordpress 6.+ fix */
-
-
 remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
 
 add_filter( 'render_block', function( $block_content, $block ) {
@@ -168,14 +144,12 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	return wp_render_layout_support_flag( $block_content, $block );
 }, 10, 2 );
 
-
 // disable gutenberg frontend styles
 function disable_gutenberg_wp_enqueue_scripts() {
-
 	wp_dequeue_style('wp-block-library');
 	wp_dequeue_style('wp-block-library-theme');
-
 }
+
 add_filter('wp_enqueue_scripts', 'disable_gutenberg_wp_enqueue_scripts', 100);
 
 function born_extract_youtube_id($url) {
@@ -186,34 +160,16 @@ function born_extract_youtube_id($url) {
 }
 
 
-
-function born_get_page_by_template($template) {
-	return get_pages([
-		'post_type' => 'page',
-		'meta_key' => '_wp_page_template',
-		'hierarchical' => 0,
-		'meta_value' => $template
-	]);
-}
-
-// Remove jQuery migrate
-
 function remove_jquery_migrate( $scripts ) {
 	if (!is_admin() && isset( $scripts->registered['jquery'])) {
 		$script = $scripts->registered['jquery'];
 		if ($script->deps) {
-			// Check whether the script has any dependencies
 			$script->deps = array_diff( $script->deps, array('jquery-migrate'));
 		}
 	}
 }
+
 add_action( 'wp_default_scripts', 'remove_jquery_migrate' );
-
-// autopull test 3
-
-
-
-
 
 
 /**
@@ -223,6 +179,7 @@ add_action( 'wp_default_scripts', 'remove_jquery_migrate' );
 function cl_acf_set_language() {
 	return acf_get_setting('default_language');
 }
+
 function get_global_option($name) {
 	add_filter('acf/settings/current_language', 'cl_acf_set_language', 100);
 	$option = get_field($name, 'options');
@@ -233,590 +190,441 @@ function get_global_option($name) {
 function disable_woo_commerce_sidebar() {
 	remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
 }
-	add_action('init', 'disable_woo_commerce_sidebar');
-	
+
+add_action('init', 'disable_woo_commerce_sidebar');
+add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 	
 
+add_action('wp_ajax_multi_add_to_cart', 'multi_ajax_add_to_cart');
+add_action('wp_ajax_nopriv_multi_add_to_cart', 'multi_ajax_add_to_cart');
 	
-	add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
-	
-	
-	
-	
-	
-	
-	
-	// Register AJAX actions for logged-in and guest users
-	add_action('wp_ajax_multi_add_to_cart', 'multi_ajax_add_to_cart');
-	add_action('wp_ajax_nopriv_multi_add_to_cart', 'multi_ajax_add_to_cart');
-	
-	function multi_ajax_add_to_cart() {
-		// Check if items are set in the POST request
-		if (isset($_POST['items'])) {
-			$item_keys = array(); // Array to store added cart item keys
-			
-			// Iterate over each item
-			foreach ($_POST['items'] as $item) {
-				if (isset($item['id'])) {
-					// Determine quantity, defaulting to 1 if not set or less than 1
-					$item_qty = isset($item['qty']) && $item['qty'] > 0 ? $item['qty'] : 1;
-					
-					// Add the item to the cart and store the cart item key
-					$item_keys[] = WC()->cart->add_to_cart($item['id'], $item_qty);
-				}
-			}
-			
-			// Send back cart item keys as JSON response
-			echo json_encode($item_keys);
-		} else {
-			echo json_encode(array('error' => 'No items found.'));
-		}
-		wp_die(); // Properly terminate the AJAX request
-	}
-	
-	
-	
-	// Disable new WooCommerce product template (from Version 7.7.0)
-	function bp_reset_product_template($post_type_args) {
-		if (array_key_exists('template', $post_type_args)) {
-			unset($post_type_args['template']);
-		}
-		return $post_type_args;
-	}
-	add_filter('woocommerce_register_post_type_product', 'bp_reset_product_template');
+function multi_ajax_add_to_cart() {
+  if (isset($_POST['items'])) {
+    $item_keys = array();
 
-// Enable Gutenberg editor for WooCommerce
-	function bp_activate_gutenberg_product($can_edit, $post_type) {
-		if ($post_type == 'product') {
-			$can_edit = true;
-		}
-		return $can_edit;
-	}
-	add_filter('use_block_editor_for_post_type', 'bp_activate_gutenberg_product', 10, 2);
-
-// Enable taxonomy fields for woocommerce with gutenberg on
-	function bp_enable_taxonomy_rest($args) {
-		$args['show_in_rest'] = true;
-		return $args;
-	}
-	add_filter('woocommerce_taxonomy_args_product_cat', 'bp_enable_taxonomy_rest');
-	add_filter('woocommerce_taxonomy_args_product_tag', 'bp_enable_taxonomy_rest');
-	
-	
-	
-	
-	add_filter('upload_mimes', function($mime_types) {
-		$mime_types['gltf'] = 'model/gltf+json';
-		$mime_types['glb'] = 'model/gltf-binary';
-		$mime_types['dwg'] = 'image/vnd.dwg';
-		$mime_types['stl'] = 'application/sla';
-		$mime_types['stp'] = 'text/plain';
-		$mime_types['step'] = 'text/plain';
-		
-		return $mime_types;
-	});
-	
-	
-	add_filter('wp_check_filetype_and_ext', function($data, $file, $filename, $mime_types, $real_mime_type) {
-		if (empty($data['ext'])
-			|| empty($data['type'])
-		) {
-			$file_type = wp_check_filetype($filename, $mime_types);
-			
-			if ('gltf' === $file_type['ext']) {
-				$data['ext']  = 'gltf';
-				$data['type'] = 'model/gltf+json';
-			}
-			
-			if ('glb' === $file_type['ext']) {
-				$data['ext']  = 'glb';
-				$data['type'] = 'model/glb-binary';
-			}
-		}
-		
-		return $data;
-	}, 10, 5);
-	
-	
-	
-	function fix_dwg_mime_type($data, $file, $filename, $mimes) {
-		// Check if the file is a .dwg file by extension
-		$ext = pathinfo($filename, PATHINFO_EXTENSION);
-		
-		if ($ext === 'dwg') {
-			// Correct the MIME type and set the correct type
-			$data['ext']  = 'dwg';
-			$data['type'] = 'application/acad'; // Standard MIME for .dwg files
-		}
-		
-		return $data;
-	}
-	add_filter('wp_check_filetype_and_ext', 'fix_dwg_mime_type', 10, 4);
-	
-	function customize_dwg_media_display($response, $attachment, $meta) {
-		// Check if the file is a .dwg file
-		if ($response['mime'] === 'image/vnd.dwg') {
-			// Set the correct MIME type and ensure it's not treated as an image
-			$response['type'] = 'file'; // Set type to 'file' instead of 'image'
-			
-			// Ensure the file has an appropriate icon
-			$response['icon'] = '/wp-includes/images/media/default.png'; // Default icon or your custom icon
-			
-			// Set the filename if it's not already set
-			if (empty($response['title'])) {
-				$response['title'] = basename($attachment->guid);
-			}
-		}
-		
-		return $response;
-	}
-	add_filter('wp_prepare_attachment_for_js', 'customize_dwg_media_display', 10, 3);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	add_filter( 'woocommerce_checkout_fields', 'custom_remove_fields' );
-	
-	function custom_remove_fields( $fields ) {
-		// Check if 'billing_municipality' field exists and remove it
-		if ( isset( $fields['billing']['billing_state'] ) ) {
-			unset( $fields['billing']['billing_state'] );
-		}
-		
-		// Check if 'shipping_municipality' field exists and remove it
-		if ( isset( $fields['shipping']['shipping_state'] ) ) {
-			unset( $fields['shipping']['shipping_state'] );
-		}
-		 
-		 if ( isset( $fields['shipping']['shipping_first_name'] ) ) {
-			 unset( $fields['shipping']['shipping_first_name'] );
-		 }
-		 if ( isset( $fields['shipping']['shipping_last_name'] ) ) {
-			 unset( $fields['shipping']['shipping_last_name'] );
-		 }
-		 if ( isset( $fields['shipping']['shipping_company'] ) ) {
-			 unset( $fields['shipping']['shipping_company'] );
-		 }
-		 
-		 unset($fields['billing']['billing_postcode']['validate']);
-		 unset($fields['shipping']['shipping_postcode']['validate']);
-		
-		 unset( $fields['billing']['billing_city'] );
-		 unset( $fields['billing']['billing_address_1'] );
-		 unset( $fields['billing']['billing_address_2'] );
-		 unset( $fields['billing']['billing_postcode'] );
-	//	 unset( $fields['billing']['billing_country'] );
-		
-   
-		 
-		 $fields['billing']['billing_first_name']['priority'] = 1;
-		 $fields['billing']['billing_last_name']['priority'] = 2;
-		 $fields['billing']['billing_company']['priority'] = 7;
-		 
-		// $fields['billing']['billing_address_1']['priority'] = 8;
-		// $fields['billing']['billing_address_2']['priority'] = 9;
-		// $fields['billing']['billing_city']['priority'] = 10;
-		// $fields['billing']['billing_postcode']['priority'] = 11;
-		 $fields['billing']['billing_email']['priority'] = 5;
-		 $fields['billing']['billing_phone']['priority'] = 6;
-		 
-		// $fields['billing']['billing_country']['priority'] = 99999;
-		 
-		 
-		 $fields['shipping']['shipping_address_1']['priority'] = 1;
-		 $fields['shipping']['shipping_address_2']['priority'] = 2;
-		 $fields['shipping']['shipping_city']['priority'] = 3;
-		 $fields['shipping']['shipping_postcode']['priority'] = 4;
-		 $fields['shipping']['shipping_country']['priority'] = 99999;
-		 
-		
-		return $fields;
-	}
-
-  
-  /**
-   * Display Born Courier address on Order Received and My Account pages
-   */
-  add_filter( 'woocommerce_order_get_formatted_shipping_address', 'display_born_courier_on_frontend', 10, 3 );
-
-  function display_born_courier_on_frontend( $address, $raw_address, $order ) {
-      $order_id = $order->get_id();
-      
-      // Pull the hidden Born Courier fields
-      $born_address  = get_post_meta( $order_id, '_born_courier_address', true );
-      $born_city     = get_post_meta( $order_id, '_born_courier_city', true );
-      $born_postcode = get_post_meta( $order_id, '_born_courier_postcode', true );
-
-      // If we have a Born Courier address, override the "Nav pieejams" default
-      if ( ! empty( $born_address ) ) {
-          $address = sprintf(
-              '%s, %s, %s',
-              esc_html( $born_address ),
-              esc_html( $born_city ),
-              esc_html( $born_postcode )
-          );
+    foreach ($_POST['items'] as $item) {
+      if (isset($item['id'])) {
+        $item_qty = isset($item['qty']) && $item['qty'] > 0 ? $item['qty'] : 1;
+        $item_keys[] = WC()->cart->add_to_cart($item['id'], $item_qty);
       }
-
-      return $address;
+    }
+    
+    echo json_encode($item_keys);
+  } else {
+    echo json_encode(array('error' => 'No items found.'));
   }
 
-	// Remove validation for missing fields
-	add_filter( 'woocommerce_checkout_posted_data', 'custom_skip_validation', 10, 1 );
-	function custom_skip_validation( $data ) {
-		// Remove unnecessary fields from posted data
-		unset( $data['billing_address_1'], $data['billing_address_2'], $data['billing_city'], $data['billing_state'], $data['billing_postcode'], $data['billing_country'] );
-		unset( $data['shipping_address_1'], $data['shipping_address_2'], $data['shipping_city'], $data['shipping_state'], $data['shipping_postcode'], $data['shipping_country'] );
-		
-		return $data;
-	}
+  wp_die();
+}
+
+
+function bp_reset_product_template($post_type_args) {
+  if (array_key_exists('template', $post_type_args)) {
+    unset($post_type_args['template']);
+  }
+
+  return $post_type_args;
+}
+
+add_filter('woocommerce_register_post_type_product', 'bp_reset_product_template');
+
+
+function bp_activate_gutenberg_product($can_edit, $post_type) {
+  if ($post_type == 'product') {
+    $can_edit = true;
+  }
+
+  return $can_edit;
+}
+
+add_filter('use_block_editor_for_post_type', 'bp_activate_gutenberg_product', 10, 2);
+
+
+function bp_enable_taxonomy_rest($args) {
+  $args['show_in_rest'] = true;
+  return $args;
+}
+
+add_filter('woocommerce_taxonomy_args_product_cat', 'bp_enable_taxonomy_rest');
+add_filter('woocommerce_taxonomy_args_product_tag', 'bp_enable_taxonomy_rest');
 	
-	add_filter( 'woocommerce_after_checkout_validation', 'custom_disable_validation', 10, 2 );
-	function custom_disable_validation( $data, $errors ) {
-		// Prevent validation errors for removed fields
-		$fields_to_ignore = [
-			'billing_address_1',
-			'billing_address_2',
-			'billing_city',
-			'billing_state',
-			'billing_postcode',
-			'billing_country',
-			'shipping_address_1',
-			'shipping_address_2',
-			'shipping_city',
-			'shipping_state',
-			'shipping_postcode',
-			'shipping_country',
-		];
-		
-		foreach ( $fields_to_ignore as $field ) {
-			if ( $errors->get_error_message( $field ) ) {
-				$errors->remove( $field );
-			}
-		}
-	}
-	
-	
-	add_filter('woocommerce_default_address_fields', 'custom_default_address_fields', 20, 1);
-	function custom_default_address_fields( $address_fields ){
-		
-		if( ! is_cart()){ // <== On cart page only
-			// Change placeholder
-			/*$address_fields['first_name']['placeholder'] = __( 'Fornavn', $domain );
-			$address_fields['last_name']['placeholder']  = __( 'Efternavn', $domain );
-			$address_fields['address_1']['placeholder']  = __( 'Adresse', $domain );
-			$address_fields['state']['placeholder']      = __( 'Stat', $domain );
-			$address_fields['postcode']['placeholder']   = __( 'Postnummer', $domain );
-			$address_fields['city']['placeholder']       = __( 'By', $domain );*/
-			
-			// Change class
-			//$address_fields['first_name']['class'] = array('form-row-first'); //  50%
-		//	$address_fields['last_name']['class']  = array('form-row-last');  //  50%
-		//	$address_fields['address_1']['class']  = array('form-row-wide');  // 100%
-			$address_fields['country']['class']      = array('form-row-first');  // 100%
-			$address_fields['postcode']['class']   = array('form-row-last'); //  50%
-			$address_fields['city']['class']       = array('form-row-first');  //  50%
-		}
-		return $address_fields;
-	}
-	
-	
-	
-	add_action( 'wp_footer', 'checkout_business_person' );
-	
-	function checkout_business_person() {
-		if (is_checkout()) {
-			?>
-           <style>
-              /* #billing_address_1_field{
-                   display:none;
-               }*/
-           </style>
-          <script type="text/javascript">
 
-              function toggleFields() {
-                  const isChecked = jQuery('#billing_business_person').is(':checked');
-
-                  // List of fields to hide/show
-                  const fields = [
-                      '#billing_company_field',
-                      '#billing_address_1_field',
-                      '#billing_address_2_field',
-                      '#billing_city_field',
-                      '#billing_postcode_field',
-                      '#billing_country_field',
-                      '#billing_registration_number_field',
-                      '#billing_vat_number_field'
-                  ];
-
-                  fields.forEach(function (field) {
-                      if (isChecked) {
-                  
-                          jQuery(field).show();
-                      } else {
-                         
-                          jQuery(field).hide();
-                      }
-                  });
-                
-              }
-
-              setTimeout(function() {
-                  toggleFields();
-              }, 500);
-              
-
-
-           jQuery("#billing_business_person").bind('change', function(){
-
-					let checked = this.checked;
-
-               toggleFields();
-                  
-                  if (checked){
-                      if (jQuery("#billing_company").attr('oldvalue') === '-'){
-                          jQuery("#billing_company").val('');
-                      }else{
-                          jQuery("#billing_company").val(jQuery("#billing_company").attr('oldvalue'));
-                      }
-
-                      if (jQuery("#billing_address_1").attr('oldvalue') === '-'){
-                          jQuery("#billing_address_1").val('');
-                      }else{
-                          jQuery("#billing_address_1").val(jQuery("#billing_address_1").attr('oldvalue'));
-                      }
-
-                      if (jQuery("#billing_city").attr('oldvalue') === '-'){
-                          jQuery("#billing_city").val('');
-                      }else{
-                          jQuery("#billing_city").val(jQuery("#billing_city").attr('oldvalue'));
-                      }
-
-                      if (jQuery("#billing_postcode").attr('oldvalue') === '-'){
-                          jQuery("#billing_postcode").val('');
-                      }else{
-                          jQuery("#billing_postcode").val(jQuery("#billing_postcode").attr('oldvalue'));
-                      }
-
-							 jQuery(".buyer-is-company-label").addClass('is-checked');
-
-                  }else{
-
-							jQuery(".buyer-is-company-label").removeClass('is-checked');
-
-            
-
-                      jQuery("#billing_company").attr('oldvalue', jQuery("#billing_company").val());
+add_filter('upload_mimes', function($mime_types) {
+  $mime_types['gltf'] = 'model/gltf+json';
+  $mime_types['glb'] = 'model/gltf-binary';
+  $mime_types['dwg'] = 'image/vnd.dwg';
+  $mime_types['stl'] = 'application/sla';
+  $mime_types['stp'] = 'text/plain';
+  $mime_types['step'] = 'text/plain';
   
+  return $mime_types;
+});
+	
+	
+add_filter('wp_check_filetype_and_ext', function($data, $file, $filename, $mime_types, $real_mime_type) {
+  if (empty($data['ext']) || empty($data['type'])) {
+    $file_type = wp_check_filetype($filename, $mime_types);
+    
+    if ('gltf' === $file_type['ext']) {
+      $data['ext']  = 'gltf';
+      $data['type'] = 'model/gltf+json';
+    }
+    
+    if ('glb' === $file_type['ext']) {
+      $data['ext']  = 'glb';
+      $data['type'] = 'model/glb-binary';
+    }
+  }
+  
+  return $data;
+}, 10, 5);
+	
+	
+add_filter( 'woocommerce_checkout_fields', 'custom_remove_fields' );
+	
+function custom_remove_fields( $fields ) {
+  if ( isset( $fields['billing']['billing_state'] ) ) {
+    unset( $fields['billing']['billing_state'] );
+  }
 
-                      jQuery("#billing_company").val('-');
-          
+  if ( isset( $fields['shipping']['shipping_state'] ) ) {
+    unset( $fields['shipping']['shipping_state'] );
+  }
+    
+  if ( isset( $fields['shipping']['shipping_first_name'] ) ) {
+    unset( $fields['shipping']['shipping_first_name'] );
+  }
+  if ( isset( $fields['shipping']['shipping_last_name'] ) ) {
+    unset( $fields['shipping']['shipping_last_name'] );
+  }
+  if ( isset( $fields['shipping']['shipping_company'] ) ) {
+    unset( $fields['shipping']['shipping_company'] );
+  }
+  
+  unset($fields['billing']['billing_postcode']['validate']);
+  unset($fields['shipping']['shipping_postcode']['validate']);
+  unset( $fields['billing']['billing_city'] );
+  unset( $fields['billing']['billing_address_1'] );
+  unset( $fields['billing']['billing_address_2'] );
+  unset( $fields['billing']['billing_postcode'] );
 
-                      jQuery("#billing_address_1").attr('oldvalue', jQuery("#billing_address_1").val());
-                      jQuery("#billing_address_1").val('-');
+  $fields['billing']['billing_first_name']['priority'] = 1;
+  $fields['billing']['billing_last_name']['priority'] = 2;
+  $fields['billing']['billing_company']['priority'] = 7;
+  $fields['billing']['billing_email']['priority'] = 5;
+  $fields['billing']['billing_phone']['priority'] = 6;
+  $fields['shipping']['shipping_address_1']['priority'] = 1;
+  $fields['shipping']['shipping_address_2']['priority'] = 2;
+  $fields['shipping']['shipping_city']['priority'] = 3;
+  $fields['shipping']['shipping_postcode']['priority'] = 4;
+  $fields['shipping']['shipping_country']['priority'] = 99999;
 
-                      jQuery("#billing_city").attr('oldvalue', jQuery("#billing_city").val());
-                      jQuery("#billing_city").val('-');
+  return $fields;
+}
 
-                      jQuery("#billing_postcode").attr('oldvalue', jQuery("#billing_postcode").val());
-                      jQuery("#billing_postcode").val('-');
+  
+add_filter( 'woocommerce_order_get_formatted_shipping_address', 'display_born_courier_on_frontend', 10, 3 );
 
-                  }
-              });
+function display_born_courier_on_frontend( $address, $raw_address, $order ) {
+  $order_id = $order->get_id();
+  $born_address  = get_post_meta( $order_id, '_born_courier_address', true );
+  $born_city     = get_post_meta( $order_id, '_born_courier_city', true );
+  $born_postcode = get_post_meta( $order_id, '_born_courier_postcode', true );
 
-          </script>
-			<?php
-		}
-	}
-	
-	
-	function ufloat_delivery_estimates() {
-		$min_delivery_time = 0;
-		$max_delivery_time = 0;
-		$delivery_text = '';
-		foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-			$_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
-			$product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
-			
-			$prod_delivery_time = get_the_terms($cart_item['product_id'],'delivery-times');
-   
-			$delivery_time_in_days_min = get_field('days_from', $prod_delivery_time[0]);
-			$delivery_time_in_days_max = get_field('days_to', $prod_delivery_time[0]);
-            $text = get_field('frontend_text',$prod_delivery_time[0]);
-            
-            if ($max_delivery_time < $delivery_time_in_days_max){
-	            $max_delivery_time = $delivery_time_in_days_max;
-	            $delivery_text = $text;
-            }
-            
-		}
-		
-		if (!empty($delivery_text)) {
-			$html = '<div class="delivery">';
-			$html .= get_field('frontend_text',$prod_delivery_time[0]);
-			$html .= '</div>';
-			
-			return $html;
-		}
-		
-		return '';
-	}
-	
-	
-	
-	/**
-	 *
-	 *
-	 * Adding megamenu
-	 */
-	
-	add_action( 'init', function () {
-		
-		$mega_menus = get_posts( [ 'post_type' => 'frequent-blocks','posts_per_page' => -1, ] );
-		$m_array    = [ null => 'None' ];
-		
-		
-		foreach ( $mega_menus as $m ) {
-			$m_array[ $m->ID ] = $m->post_title;
-		}
-		
-		$fields = [
-			
-			'_born_megamenu' => [
-				'label'             => __( 'Mega Menu', BORN_NAME ),
-				'element'           => 'select',
-				'sanitize_callback' => 'sanitize_text_field',
-				'options'           => $m_array,
-			],
-   
-		];
-		
-		new \Lucymtc\Menu( $fields );
-		
+  if ( ! empty( $born_address ) ) {
+    $address = sprintf(
+      '%s, %s, %s',
+      esc_html( $born_address ),
+      esc_html( $born_city ),
+      esc_html( $born_postcode )
+    );
+  }
 
-	} );
-	
-	
-	function borntheme_theme_widgets_init() {
-		
-		
-		register_sidebar( array(
-			'name' => 'Footer menu left',
-			'id' => 'footer-left',
-			'before_widget' => '',
-			'after_widget' => '',
-		) );
-		
-		register_sidebar( array(
-			'name' => 'Footer menu center',
-			'id' => 'footer-center',
-			'before_widget' => '',
-			'after_widget' => '',
-		) );
-		
-		register_sidebar( array(
-			'name' => 'Footer menu right',
-			'id' => 'footer-right',
-			'before_widget' => '',
-			'after_widget' => '',
-		) );
-		
-		register_sidebar( array(
-			'name' => 'Footer socials',
-			'id' => 'footer-socials',
-			'before_widget' => '',
-			'after_widget' => '',
-		) );
-		
-	}
-	add_action( 'widgets_init', 'borntheme_theme_widgets_init' );
+  return $address;
+}
 
-	add_filter( 'acf/location/rule_types', function( $choices ) {
-		$choices[ __("Other", 'acf') ]['wc_prod_attr'] = 'WC Product Attribute';
-		return $choices;
-	} );
 
-	add_filter( 'acf/location/rule_values/wc_prod_attr', function( $choices ) {
-		foreach ( wc_get_attribute_taxonomies() as $attr ) {
-			$pa_name = wc_attribute_taxonomy_name( $attr->attribute_name );
-			$choices[ $pa_name ] = $attr->attribute_label;
-		}
-		return $choices;
-	} );
+add_filter( 'woocommerce_checkout_posted_data', 'custom_skip_validation', 10, 1 );
+function custom_skip_validation( $data ) {
+  unset( $data['billing_address_1'], $data['billing_address_2'], $data['billing_city'], $data['billing_state'], $data['billing_postcode'], $data['billing_country'] );
+  unset( $data['shipping_address_1'], $data['shipping_address_2'], $data['shipping_city'], $data['shipping_state'], $data['shipping_postcode'], $data['shipping_country'] );
+  
+  return $data;
+}
 
-	add_filter( 'acf/location/rule_match/wc_prod_attr', function( $match, $rule, $options ) {
-		if ( isset( $options['taxonomy'] ) ) {
-			// Automatically match all attributes regardless of operator or specific value.
-			$match = in_array( $options['taxonomy'], array_map(
-				function( $attr ) {
-					return wc_attribute_taxonomy_name( $attr->attribute_name );
-				},
-				wc_get_attribute_taxonomies()
-			), true );
-		}
-		return $match;
-	}, 10, 3 );
+
+add_filter( 'woocommerce_after_checkout_validation', 'custom_disable_validation', 10, 2 );
+function custom_disable_validation( $data, $errors ) {
+  $fields_to_ignore = [
+    'billing_address_1',
+    'billing_address_2',
+    'billing_city',
+    'billing_state',
+    'billing_postcode',
+    'billing_country',
+    'shipping_address_1',
+    'shipping_address_2',
+    'shipping_city',
+    'shipping_state',
+    'shipping_postcode',
+    'shipping_country',
+  ];
+  
+  foreach ( $fields_to_ignore as $field ) {
+    if ( $errors->get_error_message( $field ) ) {
+      $errors->remove( $field );
+    }
+  }
+}
 	
 	
-	function md_custom_woocommerce_checkout_fields( $fields )
-	{
-		$fields['order']['order_comments']['placeholder'] = '';
-		$fields['order']['order_comments']['label'] = born_translation('order_notes_title');
+add_filter('woocommerce_default_address_fields', 'custom_default_address_fields', 20, 1);
+function custom_default_address_fields($address_fields){
+  if(!is_cart()){
+    $address_fields['country']['class'] = array('form-row-first');  // 100%
+    $address_fields['postcode']['class'] = array('form-row-last'); //  50%
+    $address_fields['city']['class'] = array('form-row-first');  //  50%
+  }
+
+  return $address_fields;
+}	
+	
+	
+add_action( 'wp_footer', 'checkout_business_person' );
+	
+function checkout_business_person() {
+  if (is_checkout()) { ?>      
+    <script type="text/javascript">
+      function toggleFields() {
+        const isChecked = jQuery('#billing_business_person').is(':checked');
+        const fields = [
+          '#billing_company_field',
+          '#billing_address_1_field',
+          '#billing_address_2_field',
+          '#billing_city_field',
+          '#billing_postcode_field',
+          '#billing_country_field',
+          '#billing_registration_number_field',
+          '#billing_vat_number_field'
+        ];
+
+        fields.forEach(function (field) {
+          if (isChecked) {
+            jQuery(field).show();
+          } else {
+            jQuery(field).hide();
+          }
+        });
+      }
+
+      setTimeout(function() {
+        toggleFields();
+      }, 500);
+      
+      jQuery("#billing_business_person").bind('change', function(){
+        let checked = this.checked;
+
+        toggleFields();
+                
+        if (checked) {
+          if (jQuery("#billing_company").attr('oldvalue') === '-') {
+            jQuery("#billing_company").val('');
+          } else {
+            jQuery("#billing_company").val(jQuery("#billing_company").attr('oldvalue'));
+          }
+
+          if (jQuery("#billing_address_1").attr('oldvalue') === '-') {
+            jQuery("#billing_address_1").val('');
+          } else {
+            jQuery("#billing_address_1").val(jQuery("#billing_address_1").attr('oldvalue'));
+          }
+
+          if (jQuery("#billing_city").attr('oldvalue') === '-') {
+            jQuery("#billing_city").val('');
+          } else {
+            jQuery("#billing_city").val(jQuery("#billing_city").attr('oldvalue'));
+          }
+
+          if (jQuery("#billing_postcode").attr('oldvalue') === '-') {
+            jQuery("#billing_postcode").val('');
+          } else {
+            jQuery("#billing_postcode").val(jQuery("#billing_postcode").attr('oldvalue'));
+          }
+
+          jQuery("  .buyer-is-company-label").addClass('is-checked');
+        } else {
+          jQuery(".buyer-is-company-label").removeClass('is-checked');
+          jQuery("#billing_company").attr('oldvalue', jQuery("#billing_company").val());
+          jQuery("#billing_company").val('-');
+          jQuery("#billing_address_1").attr('oldvalue', jQuery("#billing_address_1").val());
+          jQuery("#billing_address_1").val('-');
+          jQuery("#billing_city").attr('oldvalue', jQuery("#billing_city").val());
+          jQuery("#billing_city").val('-');
+          jQuery("#billing_postcode").attr('oldvalue', jQuery("#billing_postcode").val());
+          jQuery("#billing_postcode").val('-');
+        }
+      });
+    </script>
+  <?php }
+}
+	
+	
+function ufloat_delivery_estimates() {
+  $min_delivery_time = 0;
+  $max_delivery_time = 0;
+  $delivery_text = '';
+  foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+    $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+    $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+    $prod_delivery_time = get_the_terms($cart_item['product_id'],'delivery-times');
+  
+    $delivery_time_in_days_min = get_field('days_from', $prod_delivery_time[0]);
+    $delivery_time_in_days_max = get_field('days_to', $prod_delivery_time[0]);
+    $text = get_field('frontend_text',$prod_delivery_time[0]);
+      
+    if ($max_delivery_time < $delivery_time_in_days_max){
+      $max_delivery_time = $delivery_time_in_days_max;
+      $delivery_text = $text;
+    }
+  }
+  
+  if (!empty($delivery_text)) {
+    $html = '<div class="delivery">';
+    $html .= get_field('frontend_text',$prod_delivery_time[0]);
+    $html .= '</div>';
+    
+    return $html;
+  }
+  
+  return '';
+}
+
+	
+add_action( 'init', function () {		
+  $mega_menus = get_posts( [ 'post_type' => 'frequent-blocks','posts_per_page' => -1, ] );
+  $m_array    = [ null => 'None' ];
+
+  foreach ( $mega_menus as $m ) {
+    $m_array[ $m->ID ] = $m->post_title;
+  }
 		
-		return $fields;
-	}
-	add_filter( 'woocommerce_checkout_fields', 'md_custom_woocommerce_checkout_fields' );
-	
-	
-	
-	
-	/**
-     * Checkout fields
-     */
-
-// Add Registration Number and VAT Number fields to WooCommerce billing section
-	add_filter('woocommerce_checkout_fields', 'add_custom_billing_fields');
-	
-	function add_custom_billing_fields($fields) {
-		// Add Registration Number Field to Billing
-		$fields['billing']['billing_registration_number'] = array(
-			'type'        => 'text',
-			'label'       => __('Registration Number'),
-			'required'    => false,
-			'priority'    => 21, // Adjust this priority to set the order
-			'class'       => array('form-row-wide'),
-		);
+  $fields = [
+    '_born_megamenu' => [
+      'label'             => __( 'Mega Menu', BORN_NAME ),
+      'element'           => 'select',
+      'sanitize_callback' => 'sanitize_text_field',
+      'options'           => $m_array,
+    ],
+  ];
 		
-		// Add VAT Number Field to Billing
-		$fields['billing']['billing_vat_number'] = array(
-			'type'        => 'text',
-			'label'       => __('VAT Number'),
-			'required'    => false,
-			'priority'    => 22,
-			'class'       => array('form-row-wide'),
-		);
-		
-		return $fields;
-	}
-
-// Save the custom fields to order meta
-	add_action('woocommerce_checkout_update_order_meta', 'save_custom_billing_fields');
+  new \Lucymtc\Menu( $fields );
+} );
 	
-	function save_custom_billing_fields($order_id) {
-		if (!empty($_POST['billing_registration_number'])) {
-			update_post_meta($order_id, 'Registration Number', sanitize_text_field($_POST['billing_registration_number']));
-		}
-		if (!empty($_POST['billing_vat_number'])) {
-			update_post_meta($order_id, 'VAT Number', sanitize_text_field($_POST['billing_vat_number']));
-		}
-	}
+	
+function borntheme_theme_widgets_init() {
+  register_sidebar( array(
+    'name' => 'Footer menu left',
+    'id' => 'footer-left',
+    'before_widget' => '',
+    'after_widget' => '',
+  ) );
+  
+  register_sidebar( array(
+    'name' => 'Footer menu center',
+    'id' => 'footer-center',
+    'before_widget' => '',
+    'after_widget' => '',
+  ) );
+  
+  register_sidebar( array(
+    'name' => 'Footer menu right',
+    'id' => 'footer-right',
+    'before_widget' => '',
+    'after_widget' => '',
+  ) );
+  
+  register_sidebar( array(
+    'name' => 'Footer socials',
+    'id' => 'footer-socials',
+    'before_widget' => '',
+    'after_widget' => '',
+  ) ); 
+}
 
-// Display custom fields in the admin order edit page
-	add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom_billing_fields_in_admin', 10, 1);
+add_action( 'widgets_init', 'borntheme_theme_widgets_init' );
+
+add_filter( 'acf/location/rule_types', function( $choices ) {
+  $choices[ __("Other", 'acf') ]['wc_prod_attr'] = 'WC Product Attribute';
+  return $choices;
+} );
+
+add_filter( 'acf/location/rule_values/wc_prod_attr', function( $choices ) {
+  foreach ( wc_get_attribute_taxonomies() as $attr ) {
+    $pa_name = wc_attribute_taxonomy_name( $attr->attribute_name );
+    $choices[ $pa_name ] = $attr->attribute_label;
+  }
+  return $choices;
+} );
+
+add_filter( 'acf/location/rule_match/wc_prod_attr', function( $match, $rule, $options ) {
+  if ( isset( $options['taxonomy'] ) ) {
+    // Automatically match all attributes regardless of operator or specific value.
+    $match = in_array( $options['taxonomy'], array_map(
+      function( $attr ) {
+        return wc_attribute_taxonomy_name( $attr->attribute_name );
+      },
+      wc_get_attribute_taxonomies()
+    ), true );
+  }
+  return $match;
+}, 10, 3 );
+	
+	
+function md_custom_woocommerce_checkout_fields( $fields ) {
+  $fields['order']['order_comments']['placeholder'] = '';
+  $fields['order']['order_comments']['label'] = born_translation('order_notes_title');
+  
+  return $fields;
+}
+
+add_filter( 'woocommerce_checkout_fields', 'md_custom_woocommerce_checkout_fields' );
+	
+	
+add_filter('woocommerce_checkout_fields', 'add_custom_billing_fields');
+	
+function add_custom_billing_fields($fields) {
+  $fields['billing']['billing_registration_number'] = array(
+    'type'        => 'text',
+    'label'       => __('Registration Number'),
+    'required'    => false,
+    'priority'    => 21,
+    'class'       => array('form-row-wide'),
+  );
+
+  $fields['billing']['billing_vat_number'] = array(
+    'type'        => 'text',
+    'label'       => __('VAT Number'),
+    'required'    => false,
+    'priority'    => 22,
+    'class'       => array('form-row-wide'),
+  );
+  
+  return $fields;
+}
+
+add_action('woocommerce_checkout_update_order_meta', 'save_custom_billing_fields');
+
+function save_custom_billing_fields($order_id) {
+  if (!empty($_POST['billing_registration_number'])) {
+    update_post_meta($order_id, 'Registration Number', sanitize_text_field($_POST['billing_registration_number']));
+  }
+  if (!empty($_POST['billing_vat_number'])) {
+    update_post_meta($order_id, 'VAT Number', sanitize_text_field($_POST['billing_vat_number']));
+  }
+}
+
+
+add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom_billing_fields_in_admin', 10, 1);
 	
 	function display_custom_billing_fields_in_admin($order) {
 		$registration_number = get_post_meta($order->get_id(), 'Registration Number', true);
@@ -917,17 +725,6 @@ function disable_woo_commerce_sidebar() {
 		}
 	}
 	add_action( 'woocommerce_process_product_meta', 'save_custom_stock_status' );
-
-// Display the custom stock status on the frontend.
-	/*function display_custom_stock_status( $availability, $product ) {
-		if ( 'in_showroom' === $product->get_meta( '_stock_status' ) ) {
-			$availability['availability'] = __( 'In showroom', 'your-text-domain' );
-			$availability['class'] = 'in-showroom';
-		}
-		return $availability;
-	}
-	add_filter( 'woocommerce_get_availability', 'display_custom_stock_status', 10, 2 );*/
-	
 	
 	
 	add_filter('facetwp_facet_display_value', function($label, $params) {
