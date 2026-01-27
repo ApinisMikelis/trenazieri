@@ -437,7 +437,34 @@ function disable_woo_commerce_sidebar() {
 		
 		return $fields;
 	}
-	
+
+  
+  /**
+   * Display Born Courier address on Order Received and My Account pages
+   */
+  add_filter( 'woocommerce_order_get_formatted_shipping_address', 'display_born_courier_on_frontend', 10, 3 );
+
+  function display_born_courier_on_frontend( $address, $raw_address, $order ) {
+      $order_id = $order->get_id();
+      
+      // Pull the hidden Born Courier fields
+      $born_address  = get_post_meta( $order_id, '_born_courier_address', true );
+      $born_city     = get_post_meta( $order_id, '_born_courier_city', true );
+      $born_postcode = get_post_meta( $order_id, '_born_courier_postcode', true );
+
+      // If we have a Born Courier address, override the "Nav pieejams" default
+      if ( ! empty( $born_address ) ) {
+          $address = sprintf(
+              '%s, %s, %s',
+              esc_html( $born_address ),
+              esc_html( $born_city ),
+              esc_html( $born_postcode )
+          );
+      }
+
+      return $address;
+  }
+
 	// Remove validation for missing fields
 	add_filter( 'woocommerce_checkout_posted_data', 'custom_skip_validation', 10, 1 );
 	function custom_skip_validation( $data ) {
