@@ -386,107 +386,6 @@ table {
   }
 }
 
-a.made-by-born {
-  @include transition-very-fast;
-  display: flex;
-  align-items: flex-start;
-  text-decoration: none;
-  color: $color-white;
-  margin: 0;
-  opacity: 1;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  span {
-    white-space: nowrap;
-  }
-  svg {
-    transition: all 150ms ease;
-    margin-left: 9px;
-  }
-  .born-logo {
-    @include transition-very-fast;
-    width: 45px;
-    height: 10px;
-    position: relative;
-    margin-left: 7px;
-    margin-top: 8px;
-    display: block;
-    transform: translateY(0);
-    .item {
-      @include transition-very-fast;
-      width: 5px;
-      height: 5px;
-      position: absolute;
-      background: $color-white;
-      &:nth-child(1) {
-        left: 0;
-        top: 0;
-      }
-      &:nth-child(2) {
-        left: 0;
-        bottom: 0;
-      }
-      &:nth-child(3) {
-        left: 5px;
-        bottom: 0;
-      }
-      &:nth-child(4) {
-        left: 10px;
-        bottom: 0;
-      }
-      &:nth-child(5) {
-        left: 10px;
-        top: 0;
-      }
-      &:nth-child(6) {
-        left: 15px;
-        top: 0;
-      }
-      &:nth-child(7) {
-        left: 15px;
-        bottom: 0;
-      }
-      &:nth-child(8) {
-        left: 20px;
-        top: 0;
-      }
-      &:nth-child(9) {
-        left: 25px;
-        top: 0;
-      }
-      &:nth-child(10) {
-        left: 25px;
-        bottom: 0;
-      }
-      &:nth-child(11) {
-        left: 30px;
-        bottom: 0;
-      }
-      &:nth-child(12) {
-        left: 30px;
-        top: 0;
-      }
-      &:nth-child(13) {
-        left: 35px;
-        top: 0;
-      }
-      &:nth-child(14) {
-        left: 40px;
-        bottom: 0;
-      }
-    }
-  }
-  &:hover {
-    color: $color-text !important;
-    opacity: 1;
-    .born-logo {
-      .item {
-        background: #666666;
-      }
-    }
-  }
-}
-
 .tre-table-wrapper {
   margin-bottom: 30px;
   &:last-child {
@@ -587,9 +486,15 @@ a.made-by-born {
 .tns-gallery > .tns-item {
   position: absolute;
   left: -100%;
-  -webkit-transition: transform 0s, opacity 0s;
-  -moz-transition: transform 0s, opacity 0s;
-  transition: transform 0s, opacity 0s;
+  -webkit-transition:
+    transform 0s,
+    opacity 0s;
+  -moz-transition:
+    transform 0s,
+    opacity 0s;
+  transition:
+    transform 0s,
+    opacity 0s;
 }
 .tns-gallery > .tns-slide-active {
   position: relative;

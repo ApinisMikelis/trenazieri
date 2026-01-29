@@ -381,105 +381,6 @@ table caption {
   }
 }
 
-a.made-by-born {
-  transition: all 150ms ease;
-  display: flex;
-  align-items: flex-start;
-  text-decoration: none;
-  color: #ffffff;
-  margin: 0;
-  opacity: 1;
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-a.made-by-born span {
-  white-space: nowrap;
-}
-a.made-by-born svg {
-  transition: all 150ms ease;
-  margin-left: 9px;
-}
-a.made-by-born .born-logo {
-  transition: all 150ms ease;
-  width: 45px;
-  height: 10px;
-  position: relative;
-  margin-left: 7px;
-  margin-top: 8px;
-  display: block;
-  transform: translateY(0);
-}
-a.made-by-born .born-logo .item {
-  transition: all 150ms ease;
-  width: 5px;
-  height: 5px;
-  position: absolute;
-  background: #ffffff;
-}
-a.made-by-born .born-logo .item:nth-child(1) {
-  left: 0;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(2) {
-  left: 0;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(3) {
-  left: 5px;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(4) {
-  left: 10px;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(5) {
-  left: 10px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(6) {
-  left: 15px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(7) {
-  left: 15px;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(8) {
-  left: 20px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(9) {
-  left: 25px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(10) {
-  left: 25px;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(11) {
-  left: 30px;
-  bottom: 0;
-}
-a.made-by-born .born-logo .item:nth-child(12) {
-  left: 30px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(13) {
-  left: 35px;
-  top: 0;
-}
-a.made-by-born .born-logo .item:nth-child(14) {
-  left: 40px;
-  bottom: 0;
-}
-a.made-by-born:hover {
-  color: #222222 !important;
-  opacity: 1;
-}
-a.made-by-born:hover .born-logo .item {
-  background: #666666;
-}
-
 .tre-table-wrapper {
   margin-bottom: 30px;
 }
@@ -4898,9 +4799,6 @@ body.is-dark .bns-header .notifications:hover .icon {
   background-image: url("data:image/svg+xml,%3Csvg width='17' height='23' viewBox='0 0 17 23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.5 0.71875C9.89078 0.71875 11.0156 1.84503 11.0156 3.23438V3.90389C12.0291 4.2241 12.9635 4.78507 13.7289 5.55126C14.9831 6.80476 15.6875 8.50497 15.6875 10.2774V15.0938C16.0864 15.0938 16.4062 15.4154 16.4062 15.8125V18.6875C16.4062 19.0846 16.0864 19.4062 15.6875 19.4062H11.0156V19.7656C11.0156 21.1334 9.9231 22.246 8.56466 22.2805L8.5 22.2812C7.10922 22.2812 5.98438 21.155 5.98438 19.7656V19.4062H1.3125C0.913594 19.4062 0.59375 19.0846 0.59375 18.6875V15.8125C0.59375 15.4154 0.913594 15.0938 1.3125 15.0938V10.2774C1.3125 8.50497 2.01686 6.80476 3.27108 5.55126C4.03655 4.78507 4.97094 4.2241 5.98438 3.90389V3.23438C5.98438 1.84503 7.10922 0.71875 8.5 0.71875Z' fill='%23266f79'/%3E%3C/svg%3E%0A");
 }
 
-/* RECOVERED VENDOR STYLES 
-   Source: Original app.min.css (287kb version)
-*/
 .facetwp-facet {
   margin-bottom: 30px;
 }
