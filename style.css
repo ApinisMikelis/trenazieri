@@ -2,19 +2,11 @@
 Theme Name: Trenazieri
 Author: Miķelis Apinis
 Author URI: https://mikelis.lv/
-Version: 1.1.0.3
+Version: 1.1.0.6
 Text Domain: trenazieri
 */
 
 /* Product tags */
-.admin-product-tags {
-  position: absolute;
-}
-
-.admin-product-tags .tag {
-  font-size: 0.8rem;
-}
-
 .product-tags {
   display: flex;
   flex-wrap: wrap;

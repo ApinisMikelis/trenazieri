@@ -599,6 +599,10 @@ table caption {
   float: left;
 }
 
+.tre-product-card {
+  position: relative;
+}
+
 .tre-page-wrapper {
   overflow: hidden;
   display: flex;
@@ -9665,4 +9669,59 @@ input[type=text] {
 
 .nf-form-cont .nf-field-container {
   margin: 0 !important;
+}
+
+.admin-product-tags {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  z-index: 10;
+  font-family: sans-serif;
+}
+.admin-product-tags .tag-counter {
+  display: inline-block;
+  background: rgba(255, 102, 0, 0.9);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.admin-product-tags .tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+  max-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+}
+.admin-product-tags .tag {
+  background: #f4f4f4;
+  border-radius: 3px;
+  padding: 0 5px;
+  border-left: 2px solid #ff6600;
+}
+.admin-product-tags .tag a {
+  font-size: 0.75rem;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.admin-product-tags .tag a:hover {
+  color: #ff6600;
+}
+.admin-product-tags:hover .tag-counter {
+  background: #333;
+}
+.admin-product-tags:hover .tag-list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }
