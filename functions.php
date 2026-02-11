@@ -1050,3 +1050,40 @@ function get_faq_schema($faq_data) {
 
   return '<script type="application/ld+json">' . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
 }
+
+add_action('rest_api_init', function () {
+  register_rest_route('atx/v1', '/stock-sync', array(
+    'methods' => 'GET',
+    'callback' => 'get_atx_stock_data',
+    'permission_callback' => '__return_true',
+  ));
+});
+
+function get_atx_stock_data() {
+  global $wpdb;
+
+  $results = $wpdb->get_results("
+      SELECT p_sku.meta_value as sku, p_stock.meta_value as stock
+      FROM {$wpdb->posts} AS posts
+      -- Get the SKU
+      INNER JOIN {$wpdb->postmeta} AS p_sku ON posts.ID = p_sku.post_id AND p_sku.meta_key = '_sku'
+      -- Get the Stock
+      INNER JOIN {$wpdb->postmeta} AS p_stock ON posts.ID = p_stock.post_id AND p_stock.meta_key = '_stock'
+      -- Get the Relationship to the Brand
+      INNER JOIN {$wpdb->term_relationships} AS tr ON posts.ID = tr.object_id
+      INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+      INNER JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id
+      WHERE posts.post_type = 'product'
+      AND posts.post_status = 'publish'
+      AND t.name = 'ATX'              -- Only grab products where brand name is ATX
+      AND tt.taxonomy = 'pa_brends'    -- Adjust this to your specific brand taxonomy name
+      AND p_sku.meta_value != ''
+  ");
+
+  $data = [];
+  foreach ($results as $row) {
+      $data[$row->sku] = (int)$row->stock;
+  }
+  
+  return $data;
+}
