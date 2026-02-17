@@ -97,46 +97,44 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
     </div>
 
     <div class="slider-thumbs-wrapper">
-        <div class="slider-thumbs">
-                
-          <?php foreach ($attachment_ids as $attachment_id) : ?>
-            <?php
-            $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 104, 136);
-            $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 208, 272);
+      <div class="slider-thumbs">
+        <?php foreach ($attachment_ids as $attachment_id) : ?>
+          <?php
+          $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 104, 136);
+          $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 208, 272);
+
+          if (empty($image_url)) {
+            $image_url = born_acf_image($attachment_id,'tre-woo-gal-thumb',false);
+          }
           
-            if (empty($image_url)) {
-              $image_url = born_acf_image($attachment_id,'tre-woo-gal-thumb',false);
-            }
-            
-            if (empty($image_url_x2)) {
-              $image_url_x2 = born_acf_image($attachment_id,'tre-woo-gal-thumb-x2',false);
-            }
-              
-            ?>
-            <div class="slider-items" data-image-id="<?php echo $attachment_id; ?>">
-              <img srcset="<?php echo $image_url;?>, <?php echo $image_url_x2;?>?v=2 2x" alt="<?php the_title();?>">
+          if (empty($image_url_x2)) {
+            $image_url_x2 = born_acf_image($attachment_id,'tre-woo-gal-thumb-x2',false);
+          }
+          ?>
+          <button type="button" class="slider-item" data-image-id="<?php echo $attachment_id; ?>">
+            <img srcset="<?php echo $image_url;?>, <?php echo $image_url_x2;?>?v=2 2x" alt="<?php the_title();?>">
+          </button>
+        <?php endforeach; ?>
+
+          <?php if ($youtube_video_url):?>
+            <div class="video-item" data-lightbox="tre-lightbox-gallery">
+              <?php
+                $youtube_id = born_extract_youtube_id( $youtube_video_url);
+                $fallback = get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
+                $thumb = $youtube_id 
+                  ? "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" 
+                  : get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
+
+              ?>
+                <img
+                  src="<?php echo $thumb; ?>" 
+                  onerror="this.src='<?php echo $fallback; ?>'"
+                  alt="<?php the_title();?>"
+                  style="width:100%; height:100%; object-fit:cover; object-position:center;display:block;"
+                />
             </div>
-          <?php endforeach; ?>
-
+          <?php endif;?>
         </div>
-        <?php if ($youtube_video_url):?>
-          <div class="video-item" data-lightbox="tre-lightbox-gallery">
-            <?php
-              $youtube_id = born_extract_youtube_id( $youtube_video_url);
-              $fallback = get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
-              $thumb = $youtube_id 
-                ? "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" 
-                : get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
-
-            ?>
-              <img
-                src="<?php echo $thumb; ?>" 
-                onerror="this.src='<?php echo $fallback; ?>'"
-                alt="<?php the_title();?>"
-                style="width:100%; height:100%; object-fit:cover; object-position:center;display:block;"
-              />
-          </div>
-        <?php endif;?>
     </div>
 
   </div>
@@ -176,33 +174,22 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
         gutter: 0,
         controls: false,
         controlsPosition: 'top',
-        nav: true,
-        navContainer: '.tre-product-single-gallery .slider-thumbs',
-        navPosition: 'bottom',
-        navAsThumbnails: true,
         autoHeight: true,
         preventActionWhenRunning: false,
         onInit: showGallerySlider()
       });
 
-      var thumbsSlider = tns({
-        mode: 'carousel',
-        loop: false,
-        speed: 350,
-        container: '.tre-product-single-gallery .slider-thumbs',
-        slideBy: 1,
-        autoplay: false,
-        autoplayHoverPause: false,
-        autoplayButtonOutput: false,
-        gutter: 0,
-        controls: false,
-        controlsPosition: 'top',
-        nav: false,
-        navPosition: 'bottom',
-        navAsThumbnails: false,
-        autoHeight: false,
-        preventActionWhenRunning: false,
-        touch: false
+      $('.slider-thumbs').on('click', '.slider-item', function() {
+        $('.slider-thumbs .slider-item').removeClass('tns-nav-active');
+        $(this).addClass('tns-nav-active');
+        var index = $(this).index();
+        photosSlider.goTo(index);
+      });
+
+      photosSlider.events.on('indexChanged', function() {
+        var info = photosSlider.getInfo();
+        $('.slider-thumbs .slider-item').removeClass('tns-nav-active');
+        $('.slider-thumbs .slider-item').eq(info.index).addClass('tns-nav-active');
       });
 
       function showGallerySlider() {
@@ -214,16 +201,10 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
       $('.variations_form').on('found_variation', function (event, variation) {
         if (variation && variation.image_id) {
           let imageId = variation.image_id;
-          
-          let newThumbSlide = $('.slider-thumbs .slider-item').filter(function () {
-            return $(this).attr('data-image-id') == imageId;
-          });
-
-          if (newThumbSlide.length > 0) {
-            if (typeof thumbsSlider !== 'undefined' && thumbsSlider !== null) {
-              var element = $('[data-image-id="'+imageId+'"]');
-              element.click();
-            }
+          let targetThumb = $('.slider-thumbs .slider-item[data-image-id="' + imageId + '"]');
+          if (targetThumb.length) {
+            var index = targetThumb.index();
+            photosSlider.goTo(index);
           }
         }
       });

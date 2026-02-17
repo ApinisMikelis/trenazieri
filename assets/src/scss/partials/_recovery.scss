@@ -2167,7 +2167,7 @@ main.tre-main > .inner > .tre-table-wrapper {
 
 @media only screen and (max-width: 767px) {
   .tre-product-single-gallery .slider-thumbs .slider-item {
-    width: calc((100% / 4) - 8px) !important;
+    width: 100%;
     height: auto;
     aspect-ratio: 1 / 1.3;
   }
@@ -2175,7 +2175,7 @@ main.tre-main > .inner > .tre-table-wrapper {
 
 @media only screen and (max-width: 767px) {
   .tre-product-single-gallery .video-item {
-    width: calc((100% / 4) - 8px) !important;
+    width: 100%;
     height: auto;
     aspect-ratio: 1 / 1.3;
   }

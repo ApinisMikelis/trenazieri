@@ -2461,28 +2461,45 @@ body.single-product {
   }
 
   .slider-thumbs-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin: -6px;
-    padding-top: 10px;
+    position: relative;
+    padding: 10px 0 0;
+    margin: 0;
+
+    @include phone {
+      margin: 0;
+    }
   }
 
   .slider-thumbs {
-    width: auto !important;
-    display: flex;
-    flex-wrap: wrap;
-    white-space: initial !important;
-    .slider-item {
+    width: 100% !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    flex-wrap: wrap !important;
+    justify-content: flex-start;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    .tns-inner,
+    .tns-ovh {
+      width: 100% !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+    }
+
+    > .slider-item,
+    > .video-item {
       @include transition-very-fast;
-      // width: calc((100% / 6) - 8px) !important;
-      width: 108px !important;
-      margin: 5px 4px;
+      width: 100%;
+      flex-shrink: 0 !important;
       height: 140px;
       background-color: #f5f5f5;
       border: 2px solid $color-white;
       position: relative;
       opacity: 1 !important;
+      cursor: pointer;
+      pointer-events: auto;
+      padding: 0;
+
       &:before {
         @include transition-very-fast;
         content: "";
@@ -2520,16 +2537,16 @@ body.single-product {
 
   .video-item {
     @include transition-very-fast;
-    // width: calc((100% / 6) - 8px) !important;
-    width: 108px !important;
-    flex-shrink: 0;
-    margin: 5px 4px;
+    width: 100%;
+    flex-shrink: 0 !important;
     height: 140px;
     background-color: #f5f5f5;
     border: 2px solid $color-white;
     position: relative;
     cursor: pointer;
     opacity: 1 !important;
+    padding: 0;
+
     &:before {
       @include transition-very-fast;
       content: "";
