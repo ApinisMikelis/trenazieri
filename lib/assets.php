@@ -10,6 +10,7 @@ add_action('wp_loaded', function () {
 		['woocss', BORN_CSS.'woocommerce.css','', BORN_VERSION],
 		['leaflet', 'https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.min.css','', BORN_VERSION],
 		['slinkycss', 'https://cdn.jsdelivr.net/npm/jquery-slinky@4.2.1/dist/slinky.min.css','', BORN_VERSION],
+    ['select2css', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', '', BORN_VERSION],
 		[BORN_NAME, BORN_CSS . 'app.min.css','', BORN_VERSION],
 	];
 
@@ -39,6 +40,7 @@ add_action('wp_enqueue_scripts', function () {
 	wp_register_script('cookies-born', BORN_JS . 'cookies.js', ['jquery'], BORN_VERSION, true);
   wp_register_script('lazyload', 'https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js', ['jquery'], "", true);
 	wp_register_script('slinky', 'https://cdn.jsdelivr.net/npm/jquery-slinky@4.2.1/dist/slinky.min.js', ['jquery'], "", true);
+  wp_register_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'], BORN_VERSION, true);
 	wp_register_script(BORN_NAME, BORN_JS . 'app.min.js', ['jquery'], BORN_VERSION, true);
 
 	wp_enqueue_script('lazyload');

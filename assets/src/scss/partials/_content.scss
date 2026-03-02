@@ -2012,11 +2012,7 @@ body.single-product {
       }
 
       form.variations_form {
-        margin: 0 !important;
         padding: 0 !important;
-        select {
-          opacity: 0 !important;
-        }
         .price {
           margin-bottom: 30px !important;
         }
@@ -2046,6 +2042,14 @@ body.single-product {
           margin-bottom: 5px !important;
           color: #a4a4a4 !important;
           display: none !important;
+        }
+        /* Ensure the select2 container is actually clickable and on top */
+        .select2-container--open {
+          z-index: 999999 !important;
+        }
+
+        .select2-selection {
+          pointer-events: auto !important;
         }
         .select2-container {
           width: 100% !important;

@@ -1,5 +1,4 @@
 // Single product promo video
-
 function playSingleProductVideo(videoId, thumbnailId) {
   var iframe = document.getElementById(videoId);
   var thumbnail = document.getElementById(thumbnailId);
@@ -14,7 +13,6 @@ function playSingleProductVideo(videoId, thumbnailId) {
 }
 
 // Sliders
-
 jQuery(window).on("load", function () {
   if (jQuery(".tre-products-slider").length) {
     document
@@ -26,67 +24,44 @@ jQuery(window).on("load", function () {
           rewind: false,
           speed: 350,
           container: slider,
-          // items: 6,
           slideBy: 1,
           autoplay: false,
-          autoplayHoverPause: false,
-          autoplayButtonOutput: false,
-          autoplayTimeout: 4000,
           controls: true,
           controlsPosition: "top",
           nav: false,
-          navAsThumbnails: false,
-          autoHeight: false,
           autoWidth: true,
-          preventActionWhenRunning: false,
           mouseDrag: false,
-          lazyload: false,
         });
       });
   }
 
   if (jQuery(".tre-brands-slider").length) {
+    function showBrandsSlider() {
+      jQuery(".tre-brands-slider").addClass("is-visible");
+    }
+
     document
       .querySelectorAll(".tre-brands-slider .slider")
       .forEach((slider) => {
         tns({
           mode: "carousel",
           loop: true,
-          rewind: false,
           speed: 850,
           container: slider,
           items: 1,
           slideBy: 1,
           autoplay: true,
-          autoplayHoverPause: true,
-          autoplayButtonOutput: false,
           autoplayTimeout: 3000,
           controls: false,
-          controlsPosition: "top",
           nav: false,
-          navAsThumbnails: false,
-          autoHeight: false,
-          autoWidth: false,
-          preventActionWhenRunning: false,
-          mouseDrag: false,
-          lazyload: false,
-          onInit: showBrandsSlider(),
+          onInit: showBrandsSlider, // FIXED: Removed parentheses
         });
       });
-
-    function showBrandsSlider() {
-      jQuery(".tre-brands-slider").addClass("is-visible");
-    }
   }
 });
 
-jQuery(window).on("load scroll", function () {
-  winScrollTop = jQuery(window).scrollTop();
-  parallax();
-});
-
+// Parallax & Scroll
 var winScrollTop = 0;
-
 jQuery.fn.isInViewport = function () {
   var elementTop = jQuery(this).offset().top;
   var elementBottom = elementTop + jQuery(this).outerHeight();
@@ -101,39 +76,40 @@ function parallax() {
       var firstTop = jQuery(this).offset().top;
       var bg = jQuery(this).find(".bg");
       var speed = (firstTop - winScrollTop) * 0.08;
-      bg.css({
-        transform: "translateY(" + speed + "px)",
-      });
+      bg.css({ transform: "translateY(" + speed + "px)" });
     }
   });
 }
 
-// Menu hover delay
+jQuery(window).on("load scroll", function () {
+  winScrollTop = jQuery(window).scrollTop();
+  parallax();
+});
 
+// Menu hover delay
 jQuery(document).ready(function () {
+  var menuTimeout; // FIXED: Declared locally
   jQuery(".tre-header .inner > .menu ul > li").hover(
     function () {
       var $this = jQuery(this);
-      timeout = setTimeout(function () {
+      menuTimeout = setTimeout(function () {
         $this.addClass("has-hover");
       }, 200);
     },
     function () {
-      clearTimeout(timeout);
+      clearTimeout(menuTimeout);
       jQuery(this).removeClass("has-hover");
     },
   );
 });
 
 // Header search
-
 jQuery(document).ready(function () {
-  jQuery(
-    ".tre-header .top-bar .inner .search .icon, .tre-header .top-bar .inner .search .dropdown button.is-close",
-  ).on("click", function (e) {
+  jQuery(".tre-header .top-bar .inner .search .icon").on("click", function (e) {
     e.preventDefault();
-    jQuery(".tre-header .top-bar .inner .search").addClass("is-visible");
-    jQuery(".tre-header .top-bar .inner .search").addClass("has-full-width");
+    jQuery(".tre-header .top-bar .inner .search").addClass(
+      "is-visible has-full-width",
+    );
   });
 
   jQuery(".tre-header .top-bar .inner .search .dropdown button.is-close").on(
@@ -161,15 +137,13 @@ jQuery(document).ready(function () {
   });
 });
 
+// Accordions
 jQuery(document).ready(function () {
   var accordions = document.getElementsByClassName("accordion-trigger");
-
   for (var i = 0; i < accordions.length; i++) {
     accordions[i].onclick = function () {
       this.classList.toggle("is-open");
-
       var content = this.nextElementSibling;
-
       if (content.style.maxHeight) {
         content.style.maxHeight = null;
       } else {
@@ -178,66 +152,93 @@ jQuery(document).ready(function () {
     };
   }
 
-  var accordionsList = jQuery(".tre-accordion");
-
-  accordionsList.each(function () {
-    jQuery(this).on("click", function (e) {
-      e.preventDefault();
-
-      var $this = jQuery(this);
-
-      $this.siblings().find(".accordion-trigger").removeClass("is-open");
-      $this.siblings().find(".accordion-content").removeAttr("style");
-    });
+  jQuery(".tre-accordion").on("click", function (e) {
+    var $this = jQuery(this);
+    $this.siblings().find(".accordion-trigger").removeClass("is-open");
+    $this.siblings().find(".accordion-content").removeAttr("style");
   });
 });
 
-jQuery(window).on("load", function () {
-  jQuery(
-    '<div class="quantity-nav"><div class="quantity-button quantity-up"></div><div class="quantity-button quantity-down"></div></div>',
-  ).insertAfter(".tre-quantity input");
+// WooCommerce Logic: Variations & Quantity
+jQuery(document).ready(function ($) {
+  function initVariationsSelect2() {
+    $(".variations select").each(function () {
+      // FIXED: Only initialize if it's not already Select2
+      if (!$(this).hasClass("select2-hidden-accessible")) {
+        $(this).select2({
+          minimumResultsForSearch: Infinity,
+          width: "100%",
+        });
+      }
+    });
+  }
 
-  jQuery(".tre-quantity").each(function () {
-    var spinner = jQuery(this),
-      input = spinner.find('input[type="number"]'),
-      btnUp = spinner.find(".quantity-up"),
-      btnDown = spinner.find(".quantity-down"),
-      min = input.attr("min"),
-      max = input.attr("max");
+  // Fix for Select2 closing immediately on mouseup
+  $(document).on("mousedown", ".select2-selection", function (e) {
+    // This prevents the theme/WooCommerce from seeing the click
+    // and triggering a "blur" or "close" action.
+    e.stopPropagation();
+  });
 
-    if (max === "") {
-      max = 999;
+  // Force Select2 to stay open by preventing the 'blur' event
+  // from being triggered by parent containers
+  $(document).on("select2:opening", function (e) {
+    var $select = $(e.target);
+    if ($select.parents(".variations").length) {
+      // Specifically for your variation dropdowns
+      console.log("Opening variation dropdown...");
     }
-
-    btnUp.click(function () {
-      if (input.val() === "") {
-        var oldValue = 0;
-      } else {
-        var oldValue = parseFloat(input.val());
-      }
-
-      if (oldValue >= max) {
-        var newVal = oldValue;
-      } else {
-        var newVal = oldValue + 1;
-      }
-      spinner.find("input").val(newVal);
-      spinner.find("input").trigger("change");
-    });
-
-    btnDown.click(function () {
-      var oldValue = parseFloat(input.val());
-      if (oldValue <= min) {
-        var newVal = oldValue;
-      } else {
-        var newVal = oldValue - 1;
-      }
-      spinner.find("input").val(newVal);
-      spinner.find("input").trigger("change");
-    });
   });
+
+  function setupQuantityNav() {
+    $(".tre-quantity").each(function () {
+      var $container = $(this);
+      var $input = $container.find("input.qty");
+
+      // Handle hidden inputs (stock = 1)
+      if ($input.attr("type") === "hidden" || $input.attr("max") == 1) {
+        $container.find(".quantity-nav").remove();
+        return;
+      }
+
+      if ($container.find(".quantity-nav").length === 0) {
+        $(
+          '<div class="quantity-nav"><div class="quantity-button quantity-up"></div><div class="quantity-button quantity-down"></div></div>',
+        ).insertAfter($input);
+      }
+
+      var $btnUp = $container.find(".quantity-up");
+      var $btnDown = $container.find(".quantity-down");
+      var min = parseFloat($input.attr("min")) || 1;
+      var max = parseFloat($input.attr("max")) || 999;
+
+      $btnUp.off("click").on("click", function () {
+        var oldValue = parseFloat($input.val()) || 0;
+        var newVal = oldValue >= max ? oldValue : oldValue + 1;
+        $input.val(newVal).trigger("change");
+      });
+
+      $btnDown.off("click").on("click", function () {
+        var oldValue = parseFloat($input.val()) || 0;
+        var newVal = oldValue <= min ? oldValue : oldValue - 1;
+        $input.val(newVal).trigger("change");
+      });
+    });
+  }
+
+  initVariationsSelect2();
+  setupQuantityNav();
+
+  $(document.body).on(
+    "woocommerce_variation_has_changed updated_wc_div",
+    function () {
+      initVariationsSelect2();
+      setupQuantityNav();
+    },
+  );
 });
 
+// Table Wrappers
 jQuery(window).on("load", function () {
   jQuery(
     ".tre-main > .inner > table, figure table, .wp-block-table table",

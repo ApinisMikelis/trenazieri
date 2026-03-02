@@ -2483,11 +2483,7 @@ body.single-product .product {
   margin: 0;
 }
 .tre-product-single .inner div.summary form.variations_form {
-  margin: 0 !important;
   padding: 0 !important;
-}
-.tre-product-single .inner div.summary form.variations_form select {
-  opacity: 0 !important;
 }
 .tre-product-single .inner div.summary form.variations_form .price {
   margin-bottom: 30px !important;
@@ -2516,6 +2512,15 @@ body.single-product .product {
   margin-bottom: 5px !important;
   color: #a4a4a4 !important;
   display: none !important;
+}
+.tre-product-single .inner div.summary form.variations_form {
+  /* Ensure the select2 container is actually clickable and on top */
+}
+.tre-product-single .inner div.summary form.variations_form .select2-container--open {
+  z-index: 999999 !important;
+}
+.tre-product-single .inner div.summary form.variations_form .select2-selection {
+  pointer-events: auto !important;
 }
 .tre-product-single .inner div.summary form.variations_form .select2-container {
   width: 100% !important;
