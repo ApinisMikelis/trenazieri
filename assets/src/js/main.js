@@ -105,6 +105,7 @@ jQuery(document).ready(function () {
 
 // Header search
 jQuery(document).ready(function () {
+  // Desktop search
   jQuery(".tre-header .top-bar .inner .search .icon").on("click", function (e) {
     e.preventDefault();
     jQuery(".tre-header .top-bar .inner .search").addClass(
@@ -125,6 +126,23 @@ jQuery(document).ready(function () {
     },
   );
 
+  // Mobile search
+  jQuery(".tre-header-mobile .search .icon").on("click", function (e) {
+    e.preventDefault();
+    jQuery(".tre-header-mobile .search").addClass("is-visible has-full-width");
+  });
+
+  jQuery(".tre-header-mobile .search .dropdown button.is-close").on(
+    "click",
+    function (e) {
+      e.preventDefault();
+      jQuery(".tre-header-mobile .search").removeClass("is-visible");
+      setTimeout(function () {
+        jQuery(".tre-header-mobile .search").removeClass("has-full-width");
+      }, 150);
+    },
+  );
+
   jQuery(document).on("keydown", function (event) {
     if (event.key == "Escape") {
       jQuery(".tre-header .top-bar .inner .search").removeClass("is-visible");
@@ -133,7 +151,19 @@ jQuery(document).ready(function () {
           "has-full-width",
         );
       }, 150);
+      jQuery(".tre-header-mobile .search").removeClass("is-visible");
+      setTimeout(function () {
+        jQuery(".tre-header-mobile .search").removeClass("has-full-width");
+      }, 150);
     }
+  });
+});
+
+// Mobile menu
+jQuery(document).ready(function () {
+  jQuery(".tre-mobile-menu-trigger").on("click", function (e) {
+    e.preventDefault();
+    jQuery("body").toggleClass("is-menu-visible");
   });
 });
 
