@@ -39,7 +39,7 @@ $BORN_FRAMEWORK->Cpt
 		'exclude_from_search' => false,
 		'show_in_rest'        => true,
 		'menu_icon'           => 'dashicons-pressthis',
-	] )*/
+	] )
 	
 	->addCpt('frequent-blocks', [
 		'name'                => _x('Frequent block', 'Post type name', BORN_NAME),
