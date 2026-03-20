@@ -176,7 +176,7 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
         controlsPosition: 'top',
         autoHeight: true,
         preventActionWhenRunning: false,
-        onInit: showGallerySlider()
+        onInit: showGallerySlider
       });
 
       $('.slider-thumbs').on('click', '.slider-item', function() {
