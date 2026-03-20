@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/trenazie/public_html/wp-content/themes/trenazieri/
+    - /bin/cp -R * $DEPLOYPATH
