@@ -612,6 +612,12 @@ main.tre-main {
   justify-content: center;
   margin-bottom: 100px;
 
+  &.is-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+  }
+
   &:hover {
     .tns-controls {
       button {
@@ -2043,7 +2049,6 @@ body.single-product {
           color: #a4a4a4 !important;
           display: none !important;
         }
-        /* Ensure the select2 container is actually clickable and on top */
         .select2-container--open {
           z-index: 999999 !important;
         }

@@ -1178,6 +1178,11 @@ main.tre-main > .inner {
   justify-content: center;
   margin-bottom: 100px;
 }
+.tre-products-slider.is-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+}
 .tre-products-slider:hover .tns-controls button {
   opacity: 1 !important;
 }
@@ -2512,9 +2517,6 @@ body.single-product .product {
   margin-bottom: 5px !important;
   color: #a4a4a4 !important;
   display: none !important;
-}
-.tre-product-single .inner div.summary form.variations_form {
-  /* Ensure the select2 container is actually clickable and on top */
 }
 .tre-product-single .inner div.summary form.variations_form .select2-container--open {
   z-index: 999999 !important;

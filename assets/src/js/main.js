@@ -18,49 +18,61 @@ jQuery(window).on("load", function () {
     document
       .querySelectorAll(".tre-products-slider .slider")
       .forEach((slider) => {
-        tns({
-          mode: "carousel",
-          loop: false,
-          rewind: false,
-          speed: 350,
-          container: slider,
-          slideBy: 1,
-          autoplay: false,
-          controls: true,
-          controlsPosition: "top",
-          nav: false,
-          autoWidth: true,
-          mouseDrag: false,
-        });
+        if (slider.children.length === 0) return;
+        try {
+          tns({
+            mode: "carousel",
+            loop: false,
+            rewind: false,
+            speed: 350,
+            container: slider,
+            slideBy: 1,
+            autoplay: false,
+            controls: true,
+            controlsPosition: "top",
+            nav: false,
+            autoWidth: true,
+            mouseDrag: false,
+            onInit: function () {
+              jQuery(slider)
+                .closest(".tre-products-slider")
+                .addClass("is-visible");
+            },
+          });
+        } catch (e) {
+          console.warn("Product slider init failed:", e);
+        }
       });
   }
 
   if (jQuery(".tre-brands-slider").length) {
-    function showBrandsSlider() {
-      jQuery(".tre-brands-slider").addClass("is-visible");
-    }
-
     document
       .querySelectorAll(".tre-brands-slider .slider")
       .forEach((slider) => {
-        tns({
-          mode: "carousel",
-          loop: true,
-          speed: 850,
-          container: slider,
-          items: 1,
-          slideBy: 1,
-          autoplay: true,
-          autoplayTimeout: 3000,
-          controls: false,
-          nav: false,
-          onInit: showBrandsSlider, // FIXED: Removed parentheses
-        });
+        if (slider.children.length === 0) return;
+        try {
+          tns({
+            mode: "carousel",
+            loop: true,
+            speed: 850,
+            container: slider,
+            items: 1,
+            slideBy: 1,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            controls: false,
+            nav: false,
+            onInit: function () {
+              jQuery(".tre-brands-slider").addClass("is-visible");
+            },
+          });
+        } catch (e) {
+          console.warn("Brands slider init failed", e);
+        }
       });
   }
 });
 
-// Parallax & Scroll
 var winScrollTop = 0;
 jQuery.fn.isInViewport = function () {
   var elementTop = jQuery(this).offset().top;
