@@ -41,7 +41,7 @@ add_action('wp_enqueue_scripts', function () {
   wp_register_script('lazyload', 'https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js', ['jquery'], "", true);
 	wp_register_script('slinky', 'https://cdn.jsdelivr.net/npm/jquery-slinky@4.2.1/dist/slinky.min.js', ['jquery'], "", true);
   wp_register_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'], BORN_VERSION, true);
-	wp_register_script(BORN_NAME, BORN_JS . 'app.min.js', ['jquery'], BORN_VERSION, true);
+	wp_register_script(BORN_NAME, BORN_JS . 'app.min.js', ['jquery', 'tiny-slider'], BORN_VERSION, true);
 
 	wp_enqueue_script('lazyload');
 	wp_enqueue_script('slinky');
