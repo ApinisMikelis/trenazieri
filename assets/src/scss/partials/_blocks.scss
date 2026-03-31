@@ -1,0 +1,26 @@
+.tre-products-collection {
+  margin-bottom: 100px;
+
+  .product-grid {
+    display: grid;
+    gap: 20px; // Adjust spacing between products as needed
+
+    // Default: 4 columns for large screens (> 1300px)
+    grid-template-columns: repeat(4, 1fr);
+
+    // Medium screens: 3 columns (up to 1300px)
+    @media only screen and (max-width: 1300px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    // Small screens: 2 columns (up to 992px)
+    @media only screen and (max-width: 992px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Mobile: 1 column (up to 767px)
+    @media only screen and (max-width: 767px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}

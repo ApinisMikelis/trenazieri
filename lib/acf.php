@@ -65,6 +65,15 @@ function born_acf_init()
 	    ]);
 	    
 	    acf_register_block([
+		    'name' => 'product-collection',
+		    'title' => __('Product collection'),
+		    'render_callback' => 'born_acf_block_render_callback',
+		    'category' => 'born-category',
+		    'mode' => 'edit',
+		    'supports' => ['mode' => false],
+	    ]);
+	    
+	    acf_register_block([
 		    'name' => 'single-feature',
 		    'title' => __('Single feature'),
 		    'render_callback' => 'born_acf_block_render_callback',

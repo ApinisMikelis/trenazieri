@@ -9799,3 +9799,27 @@ input[type=text] {
   transform: translateY(0);
   pointer-events: auto;
 }
+
+.tre-products-collection {
+  margin-bottom: 100px;
+}
+.tre-products-collection .product-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+}
+@media only screen and (max-width: 1300px) {
+  .tre-products-collection .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media only screen and (max-width: 992px) {
+  .tre-products-collection .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (max-width: 767px) {
+  .tre-products-collection .product-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
