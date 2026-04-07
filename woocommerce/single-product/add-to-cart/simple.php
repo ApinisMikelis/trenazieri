@@ -26,9 +26,7 @@ if ( $product->is_in_stock() ) : ?>
 
       <div class="tre-quantity-wrapper">
         <div class="tre-quantity">
-          <button type="button" class="plus">+</button>
-          <?php
-          do_action( 'woocommerce_before_add_to_cart_quantity' );
+          <?php do_action( 'woocommerce_before_add_to_cart_quantity' );
 
           woocommerce_quantity_input(
               array(
@@ -40,7 +38,6 @@ if ( $product->is_in_stock() ) : ?>
 
           do_action( 'woocommerce_after_add_to_cart_quantity' );
           ?>
-          <button type="button" class="minus">-</button>
         </div>
       </div>
 
