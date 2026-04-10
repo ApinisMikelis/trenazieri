@@ -5781,11 +5781,6 @@ main.tre-main > .inner > .tre-table-wrapper {
   z-index: 1000;
 }
 
-.tre-header-mobile .search .dropdown .aws-search-clear span,
-.tre-header-mobile .search .dropdown button.is-close span {
-  display: none;
-}
-
 .tre-header-mobile .search .dropdown .aws-search-clear:hover,
 .tre-header-mobile .search .dropdown button.is-close:hover {
   background-image: url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='11.4141' width='1.61431' height='16.1431' transform='rotate(45 11.4141 0)' fill='%23222222'/%3E%3Crect y='1.1416' width='1.61431' height='16.1431' transform='rotate(-45 0 1.1416)' fill='%23222222'/%3E%3C/svg%3E%0A");
@@ -5875,15 +5870,6 @@ main.tre-main > .inner > .tre-table-wrapper {
 
 .tre-header .top-bar .inner .search .dropdown .aws-search-clear {
   display: block !important;
-}
-
-.tre-header .top-bar .inner .search .dropdown .aws-search-clear span,
-.tre-header .top-bar .inner .search .dropdown button.is-close span {
-  display: none;
-}
-
-.tre-header .top-bar .inner .search .dropdown .aws-search-clear:hover {
-  background-image: url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='11.4141' width='1.61431' height='16.1431' transform='rotate(45 11.4141 0)' fill='%23222222'/%3E%3Crect y='1.1416' width='1.61431' height='16.1431' transform='rotate(-45 0 1.1416)' fill='%23222222'/%3E%3C/svg%3E%0A");
 }
 
 .tre-header .top-bar .inner .search .dropdown input[type=search] {
