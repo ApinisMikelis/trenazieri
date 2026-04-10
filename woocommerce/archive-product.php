@@ -68,13 +68,6 @@ do_action( 'woocommerce_shop_loop_header' );
           <h1><?php echo $category_name;?></h1>
           <button class="filters-trigger"><span>Filtrēt</span></button>
 
-          <style>
-            .tre-products .sidebar .facet-wrap .facetwp-slider-label:after {
-              content: "€";
-              margin-left: 8px;
-            }
-          </style>
-
           <div class="filters-wrapper">
             <button class="is-close">Hide filters</button>
             <?php
