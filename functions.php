@@ -1012,3 +1012,22 @@ function get_atx_stock_data() {
   
   return $data;
 }
+
+
+function disable_specific_plugin_updates($value) {
+  $plugins_to_disable = [
+      'advanced-custom-fields-pro/acf.php',
+      'facetwp/index.php',
+  ];
+
+  if (isset($value->response) && is_array($value->response)) {
+    foreach ($plugins_to_disable as $plugin) {
+      if (isset($value->response[$plugin])) {
+          unset($value->response[$plugin]);
+      }
+    }
+  }
+
+  return $value;
+}
+add_filter('site_transient_update_plugins', 'disable_specific_plugin_updates');
