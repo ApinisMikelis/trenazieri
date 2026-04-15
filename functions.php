@@ -39,8 +39,6 @@ function contentsquare_tracking_script() {
 }
 
 add_action('wp_head', 'contentsquare_tracking_script');
-
-
 add_action('wp_enqueue_scripts', 'enqueue_styles');
 
 function enqueue_styles() {
@@ -124,10 +122,7 @@ add_image_size('portfolio', 450, 325,array('center','center') );
 add_image_size('portfolio-x2', 900, 650,array('center','center') );
 add_image_size('contacts-icon', 75, 75 );
 
-// Disable WordPress' automatic image scaling feature
 add_filter( 'big_image_size_threshold', '__return_false' );
-
-/** wordpress 6.+ fix */
 remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
 
 add_filter( 'render_block', function( $block_content, $block ) {
@@ -144,7 +139,6 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	return wp_render_layout_support_flag( $block_content, $block );
 }, 10, 2 );
 
-// disable gutenberg frontend styles
 function disable_gutenberg_wp_enqueue_scripts() {
 	wp_dequeue_style('wp-block-library');
 	wp_dequeue_style('wp-block-library-theme');
@@ -172,10 +166,6 @@ function remove_jquery_migrate( $scripts ) {
 add_action( 'wp_default_scripts', 'remove_jquery_migrate' );
 
 
-/**
- * Advanced Custom Fields Options function
- * Always fetch an Options field value from the default language
- */
 function cl_acf_set_language() {
 	return acf_get_setting('default_language');
 }
@@ -381,9 +371,9 @@ function custom_disable_validation( $data, $errors ) {
 add_filter('woocommerce_default_address_fields', 'custom_default_address_fields', 20, 1);
 function custom_default_address_fields($address_fields){
   if(!is_cart()){
-    $address_fields['country']['class'] = array('form-row-first');  // 100%
-    $address_fields['postcode']['class'] = array('form-row-last'); //  50%
-    $address_fields['city']['class'] = array('form-row-first');  //  50%
+    $address_fields['country']['class'] = array('form-row-first');
+    $address_fields['postcode']['class'] = array('form-row-last');
+    $address_fields['city']['class'] = array('form-row-first');
   }
 
   return $address_fields;
@@ -568,7 +558,6 @@ add_filter( 'acf/location/rule_values/wc_prod_attr', function( $choices ) {
 
 add_filter( 'acf/location/rule_match/wc_prod_attr', function( $match, $rule, $options ) {
   if ( isset( $options['taxonomy'] ) ) {
-    // Automatically match all attributes regardless of operator or specific value.
     $match = in_array( $options['taxonomy'], array_map(
       function( $attr ) {
         return wc_attribute_taxonomy_name( $attr->attribute_name );
@@ -640,52 +629,6 @@ add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom
 	}
 	
 	
-	
-	add_action( 'wp_ajax_mc_subscribe', 'mc_subscribe' );
-	add_action( 'wp_ajax_nopriv_mc_subscribe', 'mc_subscribe' );
-	
-	
-	include __DIR__ . '/lib/MailChimp.php';
-	
-	use DrewM\MailChimp\MailChimp;
-	
-	function mc_subscribe() {
-	
-		$apiKey = get_field('mailchimp_api_key','options');	
-		$list_id = get_field('mailchimp_list_id','options');
-		
-		if ($apiKey && $list_id){	
-			
-			$email	= isset($_POST['data']['email'])?trim($_POST['data']['email']):"";
-			
-			$MailChimp = new MailChimp($apiKey);
-			
-			$MailChimp->post("lists/$list_id/members", [
-				'email_address' => $email,
-				'status'        => 'subscribed',
-			]);
-			
-			if ($MailChimp->success()) {
-				// user created
-			} else {
-				
-				//update user status
-				$subscriber_hash = MailChimp::subscriberHash($email);
-				
-				$result = $MailChimp->patch("lists/$list_id/members/$subscriber_hash", [
-					'status'        => 'subscribed',
-					
-				]);
-			}
-			
-			exit;
-			
-		}
-		
-		
-	}
-	
-	
 	if ( ! function_exists( 'born_template_loop_category_link_open' ) ) {
 		/**
 		 * Insert the opening anchor tag for categories in the loop.
@@ -700,27 +643,19 @@ add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom
             if ($video_file){
                 $classes .= ' has-video';
             }
-            
-			/* translators: %s: Category name */
 			echo '<a aria-label="' . sprintf( esc_attr__( 'Visit product category %1$s', 'woocommerce' ), esc_attr( $category_name ) ) . '" class="'.$classes.'" href="' . esc_url( get_term_link( $category, 'product_cat' ) ) . '">';
 		}
 	}
 	
-	
-	// Add the custom stock status to the WooCommerce dropdown.
 	function add_custom_stock_status( $statuses ) {
 		$statuses['in_showroom'] = born_translation('in_showroom');
 		return $statuses;
 	}
 	add_filter( 'woocommerce_product_stock_status_options', 'add_custom_stock_status' );
 
-// Save the custom stock status when the product is updated.
 	function save_custom_stock_status( $post_id ) {
-		if ( isset( $_POST['_stock_status'] ) ) {
-			// Get the submitted stock status from the dropdown.
+		if ( isset( $_POST['_stock_status'] ) ) {			
 			$stock_status = sanitize_text_field( $_POST['_stock_status'] );
-			
-			// Save the stock status as meta data.
 			update_post_meta( $post_id, '_stock_status', $stock_status );
 		}
 	}
@@ -730,7 +665,6 @@ add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom
 	add_filter('facetwp_facet_display_value', function($label, $params) {
 		if ('pieejamba' == $params['facet']['name']) {
 			if ('instock' == $label) {
-				// Register the string for translation and get translated value
 				do_action('wpml_register_single_string', 'FacetWP Labels', 'In stock', 'In stock');
 				$label = apply_filters('wpml_translate_single_string', 'In stock', 'FacetWP Labels', 'In stock');
 			}
@@ -785,157 +719,148 @@ add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom
 add_action( 'widgets_init', 'tren_register_widget_area' );
 	
 	
-	function display_stock_status( $product ) {
-		if ( $product->is_in_stock() || $product->is_on_backorder() ) {
-			?>
-            <div class="stock">
-            <span>
-                <?php
-	                if ( $product->is_on_backorder() ) {
-		                echo 'Uz pasūtījuma'; // On backorder
-	                } elseif ( $product->is_in_stock() ) {
-		                echo 'Ir noliktavā'; // In stock
-	                }
-                ?>
-            </span>
-            </div>
-			<?php
-		}
-	}
-    
-    function output_consultation_cta(){
-        ob_start();
-        ?>
-
-        <div class="cta"><a href="#" data-lightbox="tre-lightbox-consult">Vēlies konsultāciju?</a></div>
-        
-        <div class="tre-lightbox" id="tre-lightbox-consult" style="opacity: 0; visibility: hidden; pointer-events: none;">
-            <div class="inner">
-
-                <div class="tre-lightbox-popup">
-
-                    <button class="is-close">Close</button>
-
-                    <div class="heading">
-
-                        <h2><?php echo born_translation('consultation_form_title');?></h2>
-	                    
-	                    <?php echo born_translation('consultation_form_text');?>
-
-                    </div>
-				    
-				    <?php echo do_shortcode('[ninja_form id=2]');?>
-
-                </div>
-
-            </div>
-        </div>
-        
+function display_stock_status( $product ) {
+  if ( $product->is_in_stock() || $product->is_on_backorder() ) {
+    ?>
+      <div class="stock">
+      <span>
         <?php
-        $c = ob_get_contents();
-        ob_end_clean();
-        
-        return $c;
-    }
-	
-	
-	function remove_posts_menu() {
-		remove_menu_page('edit.php');
-	}
-	add_action('admin_menu', 'remove_posts_menu');
+          if ( $product->is_on_backorder() ) {
+            echo 'Uz pasūtījuma';
+          } elseif ( $product->is_in_stock() ) {
+            echo 'Ir noliktavā';
+          }
+        ?>
+      </span>
+      </div>
+    <?php
+  }
+}
+    
+function output_consultation_cta(){
+  ob_start();
+  ?>
 
+  <div class="cta"><a href="#" data-lightbox="tre-lightbox-consult">Vēlies konsultāciju?</a></div>
+  
+  <div class="tre-lightbox" id="tre-lightbox-consult" style="opacity: 0; visibility: hidden; pointer-events: none;">
+      <div class="inner">
+
+          <div class="tre-lightbox-popup">
+
+              <button class="is-close">Close</button>
+
+              <div class="heading">
+
+                  <h2><?php echo born_translation('consultation_form_title');?></h2>
+                
+                <?php echo born_translation('consultation_form_text');?>
+
+              </div>
+      
+      <?php echo do_shortcode('[ninja_form id=2]');?>
+
+          </div>
+
+      </div>
+  </div>
+  
+  <?php
+  $c = ob_get_contents();
+  ob_end_clean();
+  
+  return $c;
+}
 	
-	remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+	
+function remove_posts_menu() {
+  remove_menu_page('edit.php');
+}
+add_action('admin_menu', 'remove_posts_menu');
+
+
+remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
 		
 	
-	function get_custom_image_url($attachment_id, $size_name, $width, $height) {
-		$file_path = get_attached_file($attachment_id);
-		
-		if (!$file_path) {
-			return false; // Attachment not found
-		}
-		
-		// Extract the directory, filename, and extension
-		$upload_dir = wp_upload_dir();
-		$file_dir   = dirname($file_path);
-		$file_name  = pathinfo($file_path, PATHINFO_FILENAME);
-		$file_ext   = pathinfo($file_path, PATHINFO_EXTENSION);
-		
-		// Construct the expected filename
-		$custom_filename = "{$file_name}-{$width}x{$height}.{$file_ext}";
-		$custom_path     = "{$file_dir}/{$custom_filename}";
-		
-		// Check if the file exists
-		if (file_exists($custom_path)) {
-			// Convert file system path to URL
-			return str_replace($upload_dir['basedir'], $upload_dir['baseurl'], $custom_path);
-		}
-		
-		// Fallback to the default WordPress function
-		return wp_get_attachment_image_url($attachment_id, 'full');
-	}
+function get_custom_image_url($attachment_id, $size_name, $width, $height) {
+  $file_path = get_attached_file($attachment_id);
+  
+  if (!$file_path) {
+    return false;
+  }
+  
+  $upload_dir = wp_upload_dir();
+  $file_dir   = dirname($file_path);
+  $file_name  = pathinfo($file_path, PATHINFO_FILENAME);
+  $file_ext   = pathinfo($file_path, PATHINFO_EXTENSION);
+  
+  $custom_filename = "{$file_name}-{$width}x{$height}.{$file_ext}";
+  $custom_path     = "{$file_dir}/{$custom_filename}";
+  
+  if (file_exists($custom_path)) {
+    return str_replace($upload_dir['basedir'], $upload_dir['baseurl'], $custom_path);
+  }
+
+  return wp_get_attachment_image_url($attachment_id, 'full');
+}
 	
 	
 	
-	function tre_yoast_search_title($title) {
-		if (is_search()) {
-			$title = born_translation('search_title').' ' . get_search_query() . ' - ' . get_bloginfo('name');
-		}
-		return $title;
-	}
-	add_filter('wpseo_title', 'tre_yoast_search_title');
+function tre_yoast_search_title($title) {
+  if (is_search()) {
+    $title = born_translation('search_title').' ' . get_search_query() . ' - ' . get_bloginfo('name');
+  }
+  return $title;
+}
+add_filter('wpseo_title', 'tre_yoast_search_title');
+
+
+add_filter('woocommerce_cart_shipping_method_full_label', 'remove_shipping_label_colon', 10, 2);
+function remove_shipping_label_colon($label, $method) {
+  $label = str_replace(':', '', $label);
+  return $label;
+}
 	
 	
-	add_filter('woocommerce_cart_shipping_method_full_label', 'remove_shipping_label_colon', 10, 2);
-	function remove_shipping_label_colon($label, $method) {
-		// Remove the colon and any whitespace after it
-		$label = str_replace(':', '', $label);
-		return $label;
-	}
+add_action('init', 'register_woocommerce_strings');
+function register_woocommerce_strings() {
+  if (function_exists('icl_register_string')) {
+    icl_register_string('woocommerce', 'Address is required.', 'Address is required.');
+    icl_register_string('woocommerce', 'City is required.', 'City is required.');
+    icl_register_string('woocommerce', 'Postcode is required.', 'Postcode is required.');
+    icl_register_string('woocommerce', 'Please select a bank', 'Please select a bank');
+    
+    icl_register_string('woocommerce', 'In stock', 'In stock');
+    icl_register_string('woocommerce', 'Out of Stock', 'Out of Stock');
+    icl_register_string('woocommerce', 'On backorder', 'On backorder');
+    icl_register_string('woocommerce', 'In shop', 'In shop');
+  }
+}
 	
-	
-	add_action('init', 'register_woocommerce_strings');
-	function register_woocommerce_strings() {
-		if (function_exists('icl_register_string')) {
-			icl_register_string('woocommerce', 'Address is required.', 'Address is required.');
-			icl_register_string('woocommerce', 'City is required.', 'City is required.');
-			icl_register_string('woocommerce', 'Postcode is required.', 'Postcode is required.');
-			icl_register_string('woocommerce', 'Please select a bank', 'Please select a bank');
-			
-			icl_register_string('woocommerce', 'In stock', 'In stock');
-			icl_register_string('woocommerce', 'Out of Stock', 'Out of Stock');
-			icl_register_string('woocommerce', 'On backorder', 'On backorder');
-			icl_register_string('woocommerce', 'In shop', 'In shop');
-		}
-	}
-	
+add_filter('woocommerce_add_error', 'translate_woocommerce_errors');
+function translate_woocommerce_errors($error) {
+  if (function_exists('icl_t')) {
+    return icl_t('woocommerce', $error, $error);
+  }
+  return $error;
+}
  
-// Then filter checkout error messages
-	add_filter('woocommerce_add_error', 'translate_woocommerce_errors');
-	function translate_woocommerce_errors($error) {
-		if (function_exists('icl_t')) {
-			return icl_t('woocommerce', $error, $error);
-		}
-		return $error;
-	}
  
- 
- add_filter('woocommerce_return_to_shop_redirect', 'redirect_empty_cart_to_homepage');
+add_filter('woocommerce_return_to_shop_redirect', 'redirect_empty_cart_to_homepage');
 function redirect_empty_cart_to_homepage() {
-    return home_url();
+  return home_url();
 }
 
-// Change the button text to homepage title
+
 add_filter('woocommerce_return_to_shop_text', 'change_empty_cart_button_text');
 function change_empty_cart_button_text() {
     $front_page_id = get_option('page_on_front');
     if ($front_page_id) {
         return get_the_title($front_page_id);
     }
-    return get_bloginfo('name'); // Fallback to site title if no static homepage is set
+    return get_bloginfo('name');
 }
  
-
 
 add_action( 'wp_head', 'tre_inject_product_schema' );
 
