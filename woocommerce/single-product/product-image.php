@@ -106,45 +106,47 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
       <?php endif; ?>
     </div>
 
-    <div class="slider-thumbs-wrapper">
-      <div class="slider-thumbs">
-        <?php foreach ($attachment_ids as $attachment_id) : ?>
-          <?php
-          $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 104, 136);
-          $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 208, 272);
-
-          if (empty($image_url)) {
-            $image_url = born_acf_image($attachment_id, 'tre-woo-gal-thumb', false);
-          }
-          
-          if (empty($image_url_x2)) {
-            $image_url_x2 = born_acf_image($attachment_id, 'tre-woo-gal-thumb-x2', false);
-          }
-          ?>
-          <button type="button" class="slider-item" data-image-id="<?php echo $attachment_id; ?>">
-            <img srcset="<?php echo esc_url($image_url); ?>, <?php echo esc_url($image_url_x2); ?>?v=2 2x" alt="<?php echo esc_attr(get_the_title()); ?>">
-          </button>
-        <?php endforeach; ?>
-
-        <?php if ($youtube_video_url):?>
-          <div class="video-item" data-lightbox="tre-lightbox-gallery">
+    <?php if ( count( $attachment_ids ) > 1 ) : ?>
+      <div class="slider-thumbs-wrapper">
+        <div class="slider-thumbs">
+          <?php foreach ($attachment_ids as $attachment_id) : ?>
             <?php
-              $youtube_id = born_extract_youtube_id( $youtube_video_url);
-              $fallback = get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
-              $thumb = $youtube_id 
-                ? "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" 
-                : $fallback;
+            $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 104, 136);
+            $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 208, 272);
+
+            if (empty($image_url)) {
+              $image_url = born_acf_image($attachment_id, 'tre-woo-gal-thumb', false);
+            }
+            
+            if (empty($image_url_x2)) {
+              $image_url_x2 = born_acf_image($attachment_id, 'tre-woo-gal-thumb-x2', false);
+            }
             ?>
-            <img
-              src="<?php echo esc_url($thumb); ?>" 
-              onerror="this.src='<?php echo esc_url($fallback); ?>'"
-              alt="<?php echo esc_attr(get_the_title()); ?>"
-              style="width:100%; height:100%; object-fit:cover; object-position:center;display:block;"
-            />
-          </div>
-        <?php endif;?>
+            <button type="button" class="slider-item" data-image-id="<?php echo $attachment_id; ?>">
+              <img srcset="<?php echo esc_url($image_url); ?>, <?php echo esc_url($image_url_x2); ?>?v=2 2x" alt="<?php echo esc_attr(get_the_title()); ?>">
+            </button>
+          <?php endforeach; ?>
+
+          <?php if ($youtube_video_url):?>
+            <div class="video-item" data-lightbox="tre-lightbox-gallery">
+              <?php
+                $youtube_id = born_extract_youtube_id( $youtube_video_url);
+                $fallback = get_template_directory_uri() . '/assets/tmp/product-video-thumb-1.jpg';
+                $thumb = $youtube_id 
+                  ? "https://i.ytimg.com/vi/{$youtube_id}/maxresdefault.jpg" 
+                  : $fallback;
+              ?>
+              <img
+                src="<?php echo esc_url($thumb); ?>" 
+                onerror="this.src='<?php echo esc_url($fallback); ?>'"
+                alt="<?php echo esc_attr(get_the_title()); ?>"
+                style="width:100%; height:100%; object-fit:cover; object-position:center;display:block;"
+              />
+            </div>
+          <?php endif;?>
+        </div>
       </div>
-    </div>
+    <?php endif; ?>
   </div>
 </div>
 
