@@ -146,9 +146,24 @@ $faq = get_field('faq',$product->get_id());
       <?php woocommerce_template_single_add_to_cart();?>
 		<?php endif; ?>
         
-    <?php if($product->get_sku()):?>
+    <?php
+    $sku = $product->get_sku();
+    if ( empty( $sku ) && $product->is_type( 'variable' ) ) {
+      $variations = $product->get_available_variations();
+      if ( ! empty( $variations ) ) {
+        foreach ( $variations as $variation ) {
+          $variation_obj = wc_get_product( $variation['variation_id'] );
+          if ( $variation_obj && $variation_obj->get_sku() ) {
+            $sku = $variation_obj->get_sku();
+            break;
+          }
+        }
+      }
+    }
+    ?>
+    <?php if( $sku ):?>
       <div class="details">
-        <?php echo born_translation('sku'); ?>: <?php echo $product->get_sku(); ?>
+        <?php echo born_translation('sku'); ?>: <span class="product-sku"><?php echo $sku; ?></span>
       </div>
     <?php endif;?>
 
@@ -290,5 +305,27 @@ $faq = get_field('faq',$product->get_id());
 	</div>
 
 </div>
+
+<?php
+if ( $product->is_type( 'variable' ) ) :
+  $variations_data = array();
+  $variations = $product->get_available_variations();
+  foreach ( $variations as $variation ) {
+    $variation_obj = wc_get_product( $variation['variation_id'] );
+    $variations_data[ $variation['variation_id'] ] = $variation_obj ? $variation_obj->get_sku() : '';
+  }
+  ?>
+  <script>
+  (function() {
+    var variationsData = <?php echo json_encode( $variations_data ); ?>;
+    jQuery('.variations_form').on('found_variation', function(event, variation) {
+      var skuEl = jQuery('.product-sku');
+      if (skuEl.length && variationsData[ variation.variation_id ]) {
+        skuEl.text( variationsData[ variation.variation_id ] );
+      }
+    });
+  })();
+  </script>
+<?php endif; ?>
 
 <?php do_action( 'woocommerce_after_single_product' ); ?>
