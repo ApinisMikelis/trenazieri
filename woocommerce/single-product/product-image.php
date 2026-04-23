@@ -111,8 +111,8 @@ $youtube_video_url = get_field('youtube_video_url', $product->get_id());
         <div class="slider-thumbs">
           <?php foreach ($attachment_ids as $attachment_id) : ?>
             <?php
-            $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 104, 136);
-            $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 208, 272);
+            $image_url = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb', 150, 150);
+            $image_url_x2 = get_custom_image_url($attachment_id, 'tre-woo-gal-thumb-x2', 300, 300);
 
             if (empty($image_url)) {
               $image_url = born_acf_image($attachment_id, 'tre-woo-gal-thumb', false);
