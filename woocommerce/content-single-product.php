@@ -87,7 +87,7 @@ $faq = get_field('faq',$product->get_id());
         
         <?php if($in_shop):?>
           <div class="tags">
-              <span>In Showroom</span>
+              <span>Apskatāms veikala ekspozīcijā</span>
           </div>
         <?php endif;?>
 
