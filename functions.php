@@ -1031,3 +1031,9 @@ function disable_specific_plugin_updates($value) {
   return $value;
 }
 add_filter('site_transient_update_plugins', 'disable_specific_plugin_updates');
+
+function fix_woocommerce_sale_price_display( $price, $regular_price, $sale_price ) {
+    return '<del aria-hidden="true">' . wc_price( $regular_price ) . '</del> <ins aria-hidden="true">' . wc_price( $sale_price ) . '</ins>';
+}
+
+add_filter( 'woocommerce_format_sale_price', 'fix_woocommerce_sale_price_display', 10, 3 );
