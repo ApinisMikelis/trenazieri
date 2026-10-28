@@ -12,7 +12,7 @@ if (
     exit('Direct access not permitted.');
 }
 
-$xml_file_path = __DIR__ . '/export/1a-test.xml';
+$xml_file_path = __DIR__ . '/export/1a.xml';
 
 $args = array(
     'status'     => 'publish',
